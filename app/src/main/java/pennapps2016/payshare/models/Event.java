@@ -10,4 +10,14 @@ public class Event implements Serializable {
     public String title, description, creator,location, date, creator_username;
     public ArrayList<String> users = new ArrayList<>();
     public ArrayList<String> shares = new ArrayList<>();
+
+    public Event() {
+    }
+
+    public Event(String title, String description, String creator, String location) {
+        this.title = title;
+        this.description = description;
+        this.creator = creator;
+        this.location = location;
+    }
 }

@@ -24,6 +24,8 @@
 
         <activity android:name=".ui.EventsListActivity" />
 
+        <activity android:name=".ui.CreateEventActivity" />
+
     </application>
 
 </manifest>
