@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">PayShare</string>
+
+    <string name="login_username_hint">Username</string>
+    <string name="login_password_hint">Password</string>
+
+    <string name="login_go">go</string>
+    <string name="login_new_acc">new account</string>
+
+</resources>
