@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -54,13 +55,22 @@ public class EventActivity extends AppCompatActivity {
         findViewById(R.id.add_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(EventActivity.this,CreateShareActivity.class);
-                i.putExtra("event",event);
+                Intent i = new Intent(EventActivity.this, CreateShareActivity.class);
+                i.putExtra("event", event);
                 startActivity(i);
             }
         });
 
         ((ListView)findViewById(R.id.shares_list)).setAdapter(new SharesListAdapter());
+        ((ListView)findViewById(R.id.shares_list)).setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ShareInfoActivity.class);
+                intent.putExtra(ShareInfoActivity.KEY_SHARE, event.shares.get(position));
+                intent.putExtra(ShareInfoActivity.KEY_EVENT, event);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -189,21 +199,6 @@ public class EventActivity extends AppCompatActivity {
             final View cardSection = convertView.findViewById(R.id.imageView3);
             final View cardSection2 = convertView.findViewById(R.id.title);
 
-// define a click listener
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    Intent i = new Intent(EventsListActivity.this,EventActivity.class);
-//                    i.putExtra("event",events.get(position));
-//                    // create the transition animation - the images in the layouts
-//                    // of both activities are defined with android:transitionName="robot"
-//                    ActivityOptions options = ActivityOptions
-//                            .makeSceneTransitionAnimation(EventsListActivity.this, Pair.create(cardSection, "image_start"),
-//                                    Pair.create(cardSection2, "title_start"));
-//                    // start the new activity
-//                    startActivity(i, options.toBundle());
-                }
-            });
             return convertView;
         }
     }

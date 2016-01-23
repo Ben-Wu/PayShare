@@ -27,6 +27,8 @@
         <activity android:name=".ui.CreateEventActivity" android:parentActivityName=".ui.EventsListActivity"/>
         <activity android:name=".ui.CreateShareActivity" android:parentActivityName=".ui.EventActivity"/>
 
+        <activity android:name=".ui.ShareInfoActivity" android:parentActivityName=".ui.EventActivity"/>
+
     </application>
 
 </manifest>

@@ -5,10 +5,22 @@
     android:layout_height="match_parent"
     tools:context=".ui.SplashActivity">
 
-    <TextView
+    <ImageView
+        android:id="@+id/splash_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="PayShare" />
+        android:src="@drawable/splash_logo"
+        android:layout_margin="20dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="PayShare"
+        android:textSize="26sp"
+        android:fontFamily="sans-serif-light"
+        android:layout_below="@id/splash_logo"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

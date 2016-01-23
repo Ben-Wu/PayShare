@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import pennapps2016.payshare.R;
@@ -53,7 +54,7 @@ public class CreateShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 users = new HashMap<>();
                 try {
-                    //add to the hasmap of all people
+                    //add to the hashmap of all people
                     JSONArray array = new JSONArray(NetworkHelper.getWithAsync(getString(R.string.base_url)+"users"));
                     for (int i = 0; i<array.length(); i++){
                         JSONObject user  = ((JSONObject)array.get(i));
@@ -71,7 +72,8 @@ public class CreateShareActivity extends AppCompatActivity {
                 final boolean[] chosens = new boolean[keys.length];
                 //find who should already be checked!
                 for (int i =0 ; i < chosens.length; i++){
-                    chosens[i] = false;
+                        chosens[i] = true;
+
                 }
                 builder.setMultiChoiceItems(keys,
                         chosens,
