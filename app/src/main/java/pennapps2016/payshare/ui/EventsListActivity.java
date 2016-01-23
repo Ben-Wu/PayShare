@@ -1,11 +1,15 @@
 package pennapps2016.payshare.ui;
 
+import android.annotation.TargetApi;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -156,12 +160,26 @@ public class EventsListActivity extends AppCompatActivity {
             ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.length());
             ((TextView)convertView.findViewById(R.id.creator)).setText(events.get(position).creator_username);
 
+
+            // get the element that receives the click event
+
+// get the common element for the transition in this activity
+            final View cardSection = convertView.findViewById(R.id.imageView3);
+            final View cardSection2 = convertView.findViewById(R.id.title);
+
+// define a click listener
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     Intent i = new Intent(EventsListActivity.this,EventActivity.class);
                     i.putExtra("event",events.get(position));
-                    startActivity(i);
+                    // create the transition animation - the images in the layouts
+                    // of both activities are defined with android:transitionName="robot"
+                    ActivityOptions options = ActivityOptions
+                            .makeSceneTransitionAnimation(EventsListActivity.this, Pair.create(cardSection, "title_start"),
+                                    Pair.create(cardSection2, "title_start"));
+                    // start the new activity
+                    startActivity(i, options.toBundle());
                 }
             });
             return convertView;
