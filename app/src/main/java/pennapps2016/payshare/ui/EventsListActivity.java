@@ -31,6 +31,7 @@ import java.util.ArrayList;
 
 import pennapps2016.payshare.R;
 import pennapps2016.payshare.models.Event;
+import pennapps2016.payshare.models.Share;
 import pennapps2016.payshare.utils.NetworkHelper;
 
 /**
@@ -107,15 +108,19 @@ public class EventsListActivity extends AppCompatActivity {
                 event.title = object.getString("title");
                 event.creator_username = object.getString("creator_username");
                 event.date = object.getString("date");
-                //event.shares = object.getJSONArray("shares");
-                /*for (String a : object.getString("users").split(",")) {
+                event.id = object.getString("_id");
+                for (String a : object.getString("users").split(",")) {
                     event.users.add(a);
-                }*/
-                /*if (!object.getString("shares").equals("")) {
-                    for (String a : object.getString("shares").split(",")) {
-                        event.shares.add(a);
+                }
+                //load shares
+                JSONArray shares = object.getJSONArray("shares");
+                if (object.getJSONArray("shares").length()>0) {
+                    for (int j = 0; j<shares.length();j++) {
+                        JSONObject shareJSON  = (JSONObject) shares.get(j);
+                        Share share = new Share(shareJSON);
+                        event.shares.add(share);
                     }
-                }*/
+                }
                 events.add(event);
             }catch (org.json.JSONException e){
                 Log.d("event fucked up", e.getMessage());

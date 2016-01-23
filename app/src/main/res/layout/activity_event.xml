@@ -3,13 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#f3f3f3">
 
     <RelativeLayout
         android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:paddingBottom="5dp">
+        android:layout_height="205dp"
+        android:paddingBottom="5dp"
+        android:focusable="false">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -25,18 +27,18 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:src="@drawable/ic_add_white_24dp"
-            app:elevation="8dp"
+            app:elevation="4dp"
             android:layout_marginRight="25dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="25dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_marginBottom="4dp"/>
 
         <TextView
             android:text="asdfdas adsad fads fads sdf dsf ds dsf"
             android:transitionName="title_start"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:layout_width="wrap_content"
             android:fontFamily="sans-serif-light"
             android:layout_height="wrap_content"
@@ -51,78 +53,89 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/description"
-        android:text="Description"
-        android:textSize="18sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="6dp"/>
-
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp" >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_date_range_blue_300_24dp" />
+        android:layout_marginBottom="8dp">
 
         <TextView
-            android:text="Date"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
+            android:id="@+id/description"
+            android:text="Description"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center"
-            android:id="@+id/date" />
-    </LinearLayout>
+            android:layout_marginLeft="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp" >
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_location_on_blue_300_24dp" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="5dp" >
 
-        <TextView
-            android:text="Users"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_date_range_blue_300_24dp" />
+
+            <TextView
+                android:text="Date"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/date" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center"
-            android:id="@+id/location" />
-    </LinearLayout>
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="5dp" >
 
-    <LinearLayout
-        android:id="@+id/event_users"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_location_on_blue_300_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
+            <TextView
+                android:text="Users"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/location" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/event_users"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_people_blue_300_24dp"/>
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="5dp">
 
-        <TextView
-            android:text="Users"
-            android:textSize="16sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_gravity="center"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_people_blue_300_24dp"/>
+
+            <TextView
+                android:text="Users"
+                android:textSize="16sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:id="@+id/creator" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -130,10 +143,12 @@
         android:text="Shares"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
-        android:background="@color/dim_foreground_disabled_material_dark"
         android:allowUndo="false"
-        android:elevation="2dp" />
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="#fff" />
 
     <ListView
         android:id="@+id/shares_list"
