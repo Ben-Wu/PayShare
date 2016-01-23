@@ -8,15 +8,16 @@
     <RelativeLayout
         android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:transitionName="title_start"
-        android:layout_height="230dp"
+        android:layout_height="210dp"
         android:paddingBottom="5dp">
 
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="170dp"
             android:src="@drawable/eventimage"
+            android:transitionName="image_start"
+            android:layout_marginBottom="30dp"
             android:layout_marginBottom="20dp"
             android:scaleType="centerCrop" />
 
@@ -34,9 +35,11 @@
             android:layout_marginBottom="10dp"/>
 
         <TextView
-            android:text="Title"
-            android:textSize="36sp"
+            android:text="asdfdas adsad fads fads sdf dsf ds dsf"
+            android:transitionName="title_start"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
+            android:fontFamily="sans-serif-light"
             android:layout_height="wrap_content"
             android:id="@+id/title"
             android:layout_marginBottom="18dp"
@@ -44,7 +47,8 @@
             android:textColor="#fff"
             android:layout_marginStart="25dp"
             android:layout_alignBottom="@+id/imageView3"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/add_share" />
 
     </RelativeLayout>
 
@@ -54,26 +58,52 @@
         android:textSize="18sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="6dp"/>
 
-    <TextView
-        android:id="@+id/date"
-        android:text="Date"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp" >
 
-    <TextView
-        android:id="@+id/location"
-        android:text="Location"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_date_range_blue_300_24dp" />
+
+        <TextView
+            android:text="Date"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/date" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginBottom="5dp"/>
+        android:layout_marginBottom="5dp" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_location_on_blue_300_24dp" />
+
+        <TextView
+            android:text="Users"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:id="@+id/location" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/event_users"
@@ -85,7 +115,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_people_blue_a200_24dp"/>
+            android:src="@drawable/ic_people_blue_300_24dp"/>
 
         <TextView
             android:text="Users"
@@ -99,9 +129,12 @@
 
     <TextView
         android:text="Shares"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"/>
+        android:padding="12dp"
+        android:background="@color/dim_foreground_disabled_material_dark"
+        android:allowUndo="false"
+        android:elevation="2dp" />
 
     <ListView
         android:id="@+id/shares_list"
