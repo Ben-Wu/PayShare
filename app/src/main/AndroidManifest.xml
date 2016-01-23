@@ -18,13 +18,14 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.LoginActivity" ></activity>
 
-        <activity android:name=".ui.EventActivity" />
+        <activity android:name=".ui.EventActivity" android:parentActivityName=".ui.EventsListActivity"/>
 
         <activity android:name=".ui.EventsListActivity" />
 
-        <activity android:name=".ui.CreateEventActivity" />
+        <activity android:name=".ui.CreateEventActivity" android:parentActivityName=".ui.EventsListActivity"/>
+        <activity android:name=".ui.CreateShareActivity" android:parentActivityName=".ui.EventActivity"/>
 
     </application>
 

@@ -1,15 +1,23 @@
 package pennapps2016.payshare.ui;
 
+import android.app.ActivityOptions;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Pair;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -46,18 +54,13 @@ public class EventActivity extends AppCompatActivity {
         findViewById(R.id.add_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*JSONObject updatedEvent;
-                try {
-                    JSONArray events = new JSONArray(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url) + "events"));
-
-                    for(int i = 0 ; i < events.length() ; i++) {
-                        events.getJSONObject(i).getString("title");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
+                Intent i = new Intent(EventActivity.this,CreateShareActivity.class);
+                i.putExtra("event",event);
+                startActivity(i);
             }
         });
+
+        ((ListView)findViewById(R.id.shares_list)).setAdapter(new SharesListAdapter());
     }
 
     @Override
@@ -65,6 +68,13 @@ public class EventActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.event, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        ((ListView)findViewById(R.id.shares_list)).setAdapter(new SharesListAdapter());
     }
 
     @Override
@@ -134,5 +144,67 @@ public class EventActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    private class SharesListAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return event.shares.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return event.shares.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+            if(convertView==null) {
+                convertView = inflater.inflate(R.layout.list_item_shares, parent, false);
+            }
+            ((TextView)convertView.findViewById(R.id.title)).setText(event.shares.get(position).title);
+            ((TextView)convertView.findViewById(R.id.description)).setText(event.shares.get(position).description);
+            ((TextView)convertView.findViewById(R.id.people_count)).setText(""+event.shares.get(position).people.size());
+            ((TextView)convertView.findViewById(R.id.price)).setText(""+event.shares.get(position).price);
+            if (event.shares.get(position).tag.equals("red")){
+                ((ImageView)convertView.findViewById(R.id.tag)).setBackgroundColor(getResources().getColor(R.color.red));
+            }else if (event.shares.get(position).tag.equals("green")){
+                ((ImageView)convertView.findViewById(R.id.tag)).setBackgroundColor(getResources().getColor(R.color.green));
+            }else{
+                ((ImageView)convertView.findViewById(R.id.tag)).setBackgroundColor(getResources().getColor(R.color.blue));
+            }
+
+
+            // get the element that receives the click event
+
+// get the common element for the transition in this activity
+            final View cardSection = convertView.findViewById(R.id.imageView3);
+            final View cardSection2 = convertView.findViewById(R.id.title);
+
+// define a click listener
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+//                    Intent i = new Intent(EventsListActivity.this,EventActivity.class);
+//                    i.putExtra("event",events.get(position));
+//                    // create the transition animation - the images in the layouts
+//                    // of both activities are defined with android:transitionName="robot"
+//                    ActivityOptions options = ActivityOptions
+//                            .makeSceneTransitionAnimation(EventsListActivity.this, Pair.create(cardSection, "image_start"),
+//                                    Pair.create(cardSection2, "title_start"));
+//                    // start the new activity
+//                    startActivity(i, options.toBundle());
+                }
+            });
+            return convertView;
+        }
     }
 }

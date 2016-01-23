@@ -1,12 +1,21 @@
 package pennapps2016.payshare.ui;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,6 +25,7 @@ import java.util.HashMap;
 
 import pennapps2016.payshare.R;
 import pennapps2016.payshare.models.Event;
+import pennapps2016.payshare.models.Share;
 import pennapps2016.payshare.utils.NetworkHelper;
 
 /**
@@ -25,6 +35,7 @@ public class CreateShareActivity extends AppCompatActivity {
 
     private Event event;
     HashMap<String,String> users;
+    Share share;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,6 +43,10 @@ public class CreateShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_share);
 
         event = (Event)getIntent().getSerializableExtra("event");
+        share = new Share();
+        share.tag = "red";
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        share.people.add(pref.getString(LoginActivity.PREF_ID,"-1"));
 
         ((Button) findViewById(R.id.choose)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +58,7 @@ public class CreateShareActivity extends AppCompatActivity {
                     for (int i = 0; i<array.length(); i++){
                         JSONObject user  = ((JSONObject)array.get(i));
                         //add anyone but the creator!
-                        if(!user.getString("_id").equals(event.creator)) {
+                        if(!user.getString("_id").equals(event.creator)&&event.users.contains(user.getString("_id"))) {
                             users.put(user.getString("name") + " (" + user.getString("user") + ")", user.getString("_id"));
                         }
                     }
@@ -56,11 +71,7 @@ public class CreateShareActivity extends AppCompatActivity {
                 final boolean[] chosens = new boolean[keys.length];
                 //find who should already be checked!
                 for (int i =0 ; i < chosens.length; i++){
-                    if (event.users.contains(users.get(keys[i]))){
-                        chosens[i]=true;
-                    }else{
-                        chosens[i] = false;
-                    }
+                    chosens[i] = false;
                 }
                 builder.setMultiChoiceItems(keys,
                         chosens,
@@ -69,9 +80,9 @@ public class CreateShareActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                 if (isChecked) {
                                     //update event
-                                    event.users.add(users.get(keys[which]));
+                                    share.people.add(users.get(keys[which]));
                                 }else {
-                                    event.users.remove(users.get(keys[which]));
+                                    share.people.remove(users.get(keys[which]));
                                 }
                             }
                         });
@@ -101,7 +112,50 @@ public class CreateShareActivity extends AppCompatActivity {
         });
     }
 
-    public void submit(View view) {
+    public void submit(View view) throws JSONException {
+        String title = ((TextView)findViewById(R.id.title)).getText().toString();
+        String descr = ((TextView)findViewById(R.id.description)).getText().toString();
+        double price  = Double.parseDouble(((TextView)findViewById(R.id.price)).getText().toString());
+        if(price!=0&&!title.equals(descr)){
+            share.title = title;
+            share.description = descr;
+            share.price = price;
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(CreateShareActivity.this);
+            share.o_payer = pref.getString(LoginActivity.PREF_ID,"-1");
+            share.price = price;
+            event.shares.add(share);
+            NetworkHelper.postWithAsync(getString(R.string.base_url)+"events/id_search/"+event.id,event.toJSONObject());
+            finish();
+        }else{
+            Snackbar.make(findViewById(R.id.master),"Please input valid data",Snackbar.LENGTH_SHORT).show();
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public void onBackPressed() {
+        this.finish();
+//        super.onBackPressed();
+    }
 
+    @Override
+    public boolean onNavigateUp() {
+        this.finish();
+        return super.onNavigateUp();
+    }
+
+    public void spinnerfuck(View view) {
+        ((RadioButton)findViewById(R.id.red)).setChecked(false);
+        ((RadioButton)findViewById(R.id.green)).setChecked(false);
+        ((RadioButton)findViewById(R.id.blue)).setChecked(false);
+        ((RadioButton)view).setChecked(true);
+        share.tag = ((RadioButton)view).getText().toString().toLowerCase();
     }
 }

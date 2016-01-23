@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class Share implements Serializable {
     public String title, description, o_payer,id="", tag;
     public double price;
-    public ArrayList<String> people;
+    public ArrayList<String> people = new ArrayList<>();
     public Share(){
 
     }
@@ -21,7 +21,6 @@ public class Share implements Serializable {
         title = object.getString("title");
         description = object.getString("description");
         o_payer = object.getString("o_payer");
-        id = object.getString("_id");
         tag = object.getString("tag");
         price = object.getDouble("price");
         people = new ArrayList<String>(Arrays.asList(object.getString("people").split(",")));
@@ -35,9 +34,6 @@ public class Share implements Serializable {
         object.put("tag",tag);
         object.put("price",price);
         object.put("people",android.text.TextUtils.join(",",people));
-        if(!id.equals("")){
-            object.put("_id",id);
-        }
         return object;
     }
 }

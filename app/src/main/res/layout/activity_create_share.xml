@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/master"
     android:padding="16dp">
 
     <TextView
@@ -36,7 +37,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/price"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal"
+        android:text="0" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -50,7 +52,8 @@
             android:text="Blue"
             android:id="@+id/blue"
             android:checked="false"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:onClick="spinnerfuck" />
 
         <RadioButton
             android:layout_width="0dp"
@@ -58,7 +61,8 @@
             android:text="Green"
             android:id="@+id/green"
             android:checked="false"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:onClick="spinnerfuck" />
 
         <RadioButton
             android:layout_width="0dp"
@@ -66,7 +70,8 @@
             android:text="Red"
             android:id="@+id/red"
             android:checked="true"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:onClick="spinnerfuck" />
     </LinearLayout>
 
     <Button
