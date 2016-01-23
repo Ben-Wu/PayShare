@@ -1,9 +1,13 @@
 package pennapps2016.payshare.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -32,9 +36,44 @@ public class EventsListActivity extends AppCompatActivity {
         getEvents();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.events_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString(LoginActivity.PREF_USER,"-1");
+            editor.putString(LoginActivity.PREF_PASSWORD,"-1");
+            editor.apply();
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     public void getEvents() {
         events = new ArrayList<>();
         ((ListView)findViewById(R.id.events_listview)).setAdapter(new EventsListAdapter());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private class EventsListAdapter extends BaseAdapter{

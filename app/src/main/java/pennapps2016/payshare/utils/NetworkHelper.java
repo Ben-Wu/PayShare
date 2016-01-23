@@ -2,6 +2,9 @@ package pennapps2016.payshare.utils;
 
 import android.util.Log;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.MediaType;
@@ -30,17 +33,16 @@ public class NetworkHelper {
                 .build();
 
         Response response = client.newCall(request).execute();
-        String s = response.body().toString();
+        String s = response.body().string();
         Log.e(TAG, s);
         return s;
     }
 
-    public static String post(String url, String json) throws IOException {
+    public static JSONObject post(String url, String json) throws IOException, JSONException {
         Log.d(TAG, "POST " + json +  " to: " + url);
 
         OkHttpClient client = new OkHttpClient();
 
-        //json = "{'name':'David Liu','pass':'aslfnaslkdf','email':'asdfas',"
 
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
@@ -48,6 +50,6 @@ public class NetworkHelper {
                 .post(body)
                 .build();
         Response response = client.newCall(request).execute();
-        return response.body().string();
+        return new JSONObject(response.body().string());
     }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import pennapps2016.payshare.R;
-import pennapps2016.payshare.ui.Models.Event;
+import pennapps2016.payshare.models.Event;
 
 /**
  * Created by BenWu on 2016-01-22.

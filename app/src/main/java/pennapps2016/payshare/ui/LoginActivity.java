@@ -1,11 +1,14 @@
 package pennapps2016.payshare.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,7 +28,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
-    private static final String KEY_USERNAME = "USERNAME";
+    public static final String KEY_USERNAME = "USERNAME",
+    PREF_USER= "PREF_USERNAME",PREF_PASSWORD = "PREF_PASSWORD", PREF_ID = "PREF_ID";
 
     private String mBaseUrl;
 
@@ -53,6 +57,12 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        if (!pref.getString(PREF_USER,"-1").equals("-1")){
+            new VerifyLoginTask().execute(pref.getString(PREF_USER,"-1"),pref.getString(PREF_PASSWORD,"-1"));
+        }
     }
 
     private void login() {
@@ -87,6 +97,12 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
             if(result == null) {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString(PREF_USER,"-1");
+                editor.putString(PREF_PASSWORD,"-1");
+                editor.putString(PREF_ID,"-1");
+                editor.apply();
                 showErrorMessage();
                 return;
             } else {
@@ -99,18 +115,25 @@ public class LoginActivity extends AppCompatActivity {
                 for(int i = 0 ; i < array.length() ; i++) {
                     JSONObject userInfo = array.getJSONObject(i);
                     Log.d(TAG, userInfo.getString("user"));
-                    Log.d(TAG, userInfo.getString("pass"));
+                    Log.d(TAG, userInfo.getString("password"));
                     if(userInfo.getString("user").equals(username)) {
-                        if(userInfo.getString("pass").equals(password)) {
+                        if(userInfo.getString("password").equals(password)) {
                             Log.d(TAG, "Username and pass good");
+                            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.putString(PREF_USER,username);
+                            editor.putString(PREF_PASSWORD,password);
+                            editor.putString(PREF_ID,userInfo.getString("_id"));
+                            editor.apply();
                             Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
                             intent.putExtra(KEY_USERNAME, username); // next activity will know the user
                             startActivity(intent);
+                            return;
                         } else {
                             Log.d(TAG, "Password bad");
                             showErrorMessage();
+                            return;
                         }
-                        return;
                     }
                 }
                 Log.d(TAG, "Username not found");
@@ -126,28 +149,110 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void createAccount() {
-        final View createAccountFields = findViewById(R.id.new_acc_fields);
-        createAccountFields.setVisibility(View.VISIBLE);
-
-        findViewById(R.id.create_acc_cancel).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.name).setVisibility(View.VISIBLE);
+        findViewById(R.id.password_confirm).setVisibility(View.VISIBLE);
+        ((Button)findViewById(R.id.login_new_acc)).setText("Cancel");
+        findViewById(R.id.login_new_acc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createAccountFields.setVisibility(View.INVISIBLE);
+                findViewById(R.id.name).setVisibility(View.GONE);
+                findViewById(R.id.password_confirm).setVisibility(View.GONE);
+                ((Button)findViewById(R.id.login_new_acc)).setText("New Account");
             }
         });
 
-        findViewById(R.id.create_acc_create).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.login_go).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = ((EditText) findViewById(R.id.create_acc_username)).getText().toString();
-                String password = ((EditText) findViewById(R.id.create_acc_password)).getText().toString();
-                String email = ((EditText) findViewById(R.id.create_acc_email)).getText().toString();
+                if (((EditText) findViewById(R.id.password_confirm)).getText().toString().equals(((EditText) findViewById(R.id.password_field)).getText().toString())){
+                    String username = ((EditText) findViewById(R.id.username_field)).getText().toString();
+                    String password = ((EditText) findViewById(R.id.password_field)).getText().toString();
+                    String name = ((EditText) findViewById(R.id.name)).getText().toString();
+                    if(username.length() != 0 && password.length() != 0 && name.length() != 0) {
+                        new VerifySignUp().execute(username,password,name);
 
-                if(username.length() != 0 && password.length() != 0 && email.length() != 0) {
-                    // TODO: server stuff
+                    }else{
+                        Toast.makeText(getApplicationContext(),"Cannot have empty fields",Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(),"Password did not match",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+    private class VerifySignUp extends AsyncTask<String, Void, JSONObject> {
+
+        private String username;
+        private String password;
+        private String name;
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JSONObject json = null;
+
+            username = params[0];
+            password = params[1];
+            name = params[2];
+
+            JSONObject object = new JSONObject();
+            try {
+                object.put("name",name);
+                object.put("user",username);
+                object.put("password",password);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                json = NetworkHelper.post(mBaseUrl + "users",object.toString());
+                Log.e(TAG, json.toString());
+            } catch (IOException e) {
+                Log.e(TAG, "Error downloading JSON: " + e);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            if(result == null) {
+                SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString(PREF_USER,"-1");
+                editor.putString(PREF_PASSWORD,"-1");
+                editor.putString(PREF_ID,"-1");
+                editor.apply();
+                showErrorMessage();
+                return;
+            } else {
+                Log.e(TAG, result.toString());
+            }
+            try {
+                if(result.getInt("insertedCount")==1) {
+                    Log.d(TAG, "Username and pass good");
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString(PREF_USER,username);
+                    editor.putString(PREF_PASSWORD,password);
+                    editor.putString(PREF_PASSWORD,result.getJSONArray("insertedIds").get(0).toString());
+                    editor.apply();
+                    Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
+                    intent.putExtra(KEY_USERNAME, username); // next activity will know the user
+                    startActivity(intent);
+                } else {
+                    Log.d(TAG, "Password bad");
+                    showErrorMessage();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        private void showErrorMessage() {
+            Toast.makeText(getApplicationContext(), "Signup failed", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
