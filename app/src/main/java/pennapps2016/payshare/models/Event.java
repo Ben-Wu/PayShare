@@ -13,11 +13,4 @@ public class Event implements Serializable {
 
     public Event() {
     }
-
-    public Event(String title, String description, String creator, String location) {
-        this.title = title;
-        this.description = description;
-        this.creator = creator;
-        this.location = location;
-    }
 }
