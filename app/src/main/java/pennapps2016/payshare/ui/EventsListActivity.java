@@ -15,6 +15,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import pennapps2016.payshare.R;
+import pennapps2016.payshare.models.Event;
 
 /**
  * Created by BenWu on 2016-01-22.
