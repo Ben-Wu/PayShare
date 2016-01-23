@@ -107,7 +107,7 @@ public class EventsListActivity extends AppCompatActivity {
                 event.title = object.getString("title");
                 event.creator_username = object.getString("creator_username");
                 event.date = object.getString("date");
-                event.shares = object.getJSONArray("shares");
+                //event.shares = object.getJSONArray("shares");
                 /*for (String a : object.getString("users").split(",")) {
                     event.users.add(a);
                 }*/
@@ -158,7 +158,7 @@ public class EventsListActivity extends AppCompatActivity {
             ((TextView)convertView.findViewById(R.id.title)).setText(events.get(position).title);
             ((TextView)convertView.findViewById(R.id.description)).setText(events.get(position).description);
             ((TextView)convertView.findViewById(R.id.people_count)).setText(""+events.get(position).users.size());
-            ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.length());
+            ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.size());
             ((TextView)convertView.findViewById(R.id.creator)).setText(events.get(position).creator_username);
 
 

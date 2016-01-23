@@ -36,7 +36,7 @@ public class EventActivity extends AppCompatActivity {
         findViewById(R.id.add_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                JSONObject updatedEvent;
+                /*JSONObject updatedEvent;
                 try {
                     JSONArray events = new JSONArray(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url) + "events"));
 
@@ -45,7 +45,7 @@ public class EventActivity extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }
+                }*/
             }
         });
     }

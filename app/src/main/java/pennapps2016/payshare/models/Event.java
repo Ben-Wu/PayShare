@@ -11,8 +11,7 @@ import java.util.ArrayList;
 public class Event implements Serializable {
     public String title, description, creator, location, date, creator_username;
     public ArrayList<String> users = new ArrayList<>();
-    //public ArrayList<String> shares = new ArrayList<>();
-    public JSONArray shares = new JSONArray();
+    public ArrayList<String> shares = new ArrayList<>();
 
     public Event() {
     }
