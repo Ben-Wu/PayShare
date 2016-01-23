@@ -3,6 +3,7 @@ package pennapps2016.payshare.utils;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -76,6 +77,56 @@ public class NetworkHelper {
 
             Request request = new Request.Builder()
                     .url(params[0])
+                    .build();
+
+            Response response = null;
+            String s = null;
+            try {
+                response = client.newCall(request).execute();
+                s = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
+    }
+
+    public static String postWithAsync(String url,JSONObject body){
+        try {
+            return new postAsync().execute(url,body.toString()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+    public static String postWithAsync(String url,JSONArray body){
+        try {
+            return new postAsync().execute(url,body.toString()).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static class postAsync extends AsyncTask<String,Void,String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(TAG, "GET JSON from: " + params[0]);
+
+            OkHttpClient client = new OkHttpClient();
+
+            RequestBody body = RequestBody.create(JSON, params[1]);
+            Request request = new Request.Builder()
+                    .url(params[0])
+                    .post(body)
                     .build();
 
             Response response = null;

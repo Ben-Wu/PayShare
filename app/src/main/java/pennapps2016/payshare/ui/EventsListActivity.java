@@ -94,22 +94,21 @@ public class EventsListActivity extends AppCompatActivity {
         for (int i = 0; i< array.length();i++){
             JSONObject object= (JSONObject) array.get(i);
             Event event = new Event();
-            String x = NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"users/id_search/"+object.getString("creator"));
-            if(!x.equals("null")) {
-                event.creator = (new JSONObject(x).getString("name"));
-                event.description = object.getString("description");
-                event.location = object.getString("location");
-                event.title = object.getString("title");
-                for (String a : object.getString("users").split(",")) {
-                    event.users.add(a);
-                }
-                if(!object.getString("shares").equals("")){
-                    for (String a : object.getString("shares").split(",")) {
-                        event.shares.add(a);
-                    }
-                }
-                events.add(event);
+            event.creator = object.getString("creator");
+            event.description = object.getString("description");
+            event.location = object.getString("location");
+            event.title = object.getString("title");
+            event.creator_name = object.getString("creator_name");
+            event.date = object.getString("date");
+            for (String a : object.getString("users").split(",")) {
+                event.users.add(a);
             }
+            if(!object.getString("shares").equals("")){
+                for (String a : object.getString("shares").split(",")) {
+                    event.shares.add(a);
+                }
+            }
+            events.add(event);
         }
         ((ListView)findViewById(R.id.events_listview)).setAdapter(new EventsListAdapter());
     }
