@@ -23,6 +23,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:drawSelectorOnTop="true"
+            android:transitionName="title_start"
+            android:id="@+id/title_part_card"
             android:layout_height="120dp">
 
             <ImageView
@@ -30,7 +32,8 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/imageView3"
                 android:src="@drawable/eventimage"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:contentDescription="background" />
 
             <TextView
                 android:layout_width="wrap_content"

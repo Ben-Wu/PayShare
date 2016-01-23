@@ -8,11 +8,12 @@
     <RelativeLayout
         android:clipToPadding="false"
         android:layout_width="match_parent"
+        android:transitionName="title_start"
         android:layout_height="230dp"
         android:paddingBottom="5dp">
 
         <ImageView
-            android:id="@+id/event_image"
+            android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:src="@drawable/eventimage"
@@ -34,14 +35,16 @@
 
         <TextView
             android:text="Title"
-            android:textSize="24sp"
+            android:textSize="36sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/event_image"
             android:id="@+id/title"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="18dp"
             android:layout_marginLeft="24dp"
-            android:textColor="#fff" />
+            android:textColor="#fff"
+            android:layout_marginStart="25dp"
+            android:layout_alignBottom="@+id/imageView3"
+            android:layout_alignParentStart="true" />
 
     </RelativeLayout>
 
