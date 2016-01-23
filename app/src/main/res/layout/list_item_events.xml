@@ -23,7 +23,6 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:drawSelectorOnTop="true"
-            android:transitionName="title_start"
             android:id="@+id/title_part_card"
             android:layout_height="120dp">
 
@@ -32,11 +31,13 @@
                 android:layout_height="fill_parent"
                 android:id="@+id/imageView3"
                 android:src="@drawable/eventimage"
+                android:transitionName="image_start"
                 android:scaleType="centerCrop"
                 android:contentDescription="background" />
 
             <TextView
                 android:layout_width="wrap_content"
+                android:transitionName="title_start"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Event Title"
@@ -85,7 +86,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView2"
-                        android:src="@drawable/ic_people_blue_a200_18dp"
+                        android:src="@drawable/ic_people_blue_300_18dp"
                         android:paddingRight="6dp" />
 
                     <TextView
@@ -106,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView"
-                        android:src="@drawable/ic_payment_blue_a200_18dp"
+                        android:src="@drawable/ic_payment_blue_300_18dp"
                         android:paddingRight="6dp" />
 
                     <TextView

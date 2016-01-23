@@ -8,6 +8,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.transition.TransitionInflater;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -175,7 +176,7 @@ public class EventsListActivity extends AppCompatActivity {
                     // create the transition animation - the images in the layouts
                     // of both activities are defined with android:transitionName="robot"
                     ActivityOptions options = ActivityOptions
-                            .makeSceneTransitionAnimation(EventsListActivity.this, Pair.create(cardSection, "title_start"),
+                            .makeSceneTransitionAnimation(EventsListActivity.this, Pair.create(cardSection, "image_start"),
                                     Pair.create(cardSection2, "title_start"));
                     // start the new activity
                     startActivity(i, options.toBundle());
