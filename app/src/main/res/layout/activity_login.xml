@@ -5,12 +5,14 @@
     android:padding="10dp">
 
     <EditText
+        android:id="@+id/username_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/login_username_hint"
-        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz _-1234567890"/>
+        android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-1234567890"/>
 
     <EditText
+        android:id="@+id/password_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/login_password_hint"
@@ -22,16 +24,69 @@
         android:layout_gravity="end">
 
         <Button
+            android:id="@+id/login_new_acc"
             android:text="@string/login_new_acc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Borderless"/>
 
         <Button
+            android:id="@+id/login_go"
             android:text="@string/login_go"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button.Borderless"/>
+
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/new_acc_fields"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="invisible">
+        
+        <EditText
+            android:id="@+id/create_acc_username"
+            android:hint="@string/login_username_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-1234567890"/>
+
+        <EditText
+            android:id="@+id/create_acc_email"
+            android:hint="@string/login_email_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-1234567890"/>
+
+        <EditText
+            android:id="@+id/create_acc_password"
+            android:hint="@string/login_password_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end">
+
+            <Button
+                android:id="@+id/create_acc_cancel"
+                android:text="@string/create_acc_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"/>
+
+            <Button
+                android:id="@+id/create_acc_create"
+                android:text="@string/create_acc_create"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

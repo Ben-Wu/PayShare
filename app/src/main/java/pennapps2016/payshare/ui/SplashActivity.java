@@ -1,5 +1,6 @@
 package pennapps2016.payshare.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +8,7 @@ import android.os.Bundle;
 
 import pennapps2016.payshare.R;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends Activity {
 
     private CountDownTimer mSplashTimer;
 
