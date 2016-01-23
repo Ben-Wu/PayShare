@@ -15,11 +15,17 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import pennapps2016.payshare.R;
 import pennapps2016.payshare.models.Event;
+import pennapps2016.payshare.utils.NetworkHelper;
 
 /**
  * Created by BenWu on 2016-01-22.
@@ -45,7 +51,13 @@ public class EventsListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        getEvents();
+        try {
+            getEvents();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -75,8 +87,24 @@ public class EventsListActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void getEvents() {
+    public void getEvents() throws IOException, JSONException {
         events = new ArrayList<>();
+        JSONArray array = new JSONArray(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"events"));
+        for (int i = 0; i< array.length();i++){
+            JSONObject object= (JSONObject) array.get(i);
+            Event event = new Event();
+            event.creator = object.getString("creator");
+            event.description = object.getString("description");
+            event.location = object.getString("location");
+            event.title = object.getString("title");
+            for (String a : object.getString("users").split(",")){
+                event.users.add(a);
+            }
+            for (String a : object.getString("shares").split(",")){
+                event.shares.add(a);
+            }
+            events.add(event);
+        }
         ((ListView)findViewById(R.id.events_listview)).setAdapter(new EventsListAdapter());
     }
 
@@ -108,11 +136,11 @@ public class EventsListActivity extends AppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-            convertView = inflater.inflate(R.layout.list_item_events,parent);
+            convertView = inflater.inflate(R.layout.list_item_events,null);
             ((TextView)convertView.findViewById(R.id.title)).setText(events.get(position).title);
             ((TextView)convertView.findViewById(R.id.description)).setText(events.get(position).description);
-            ((TextView)convertView.findViewById(R.id.people_count)).setText(events.get(position).users.size());
-            ((TextView)convertView.findViewById(R.id.payment_count)).setText(events.get(position).shares.size());
+            ((TextView)convertView.findViewById(R.id.people_count)).setText(""+events.get(position).users.size());
+            ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.size());
             ((TextView)convertView.findViewById(R.id.creator)).setText("Made by: "+events.get(position).creator);
 
             convertView.setOnClickListener(new View.OnClickListener() {

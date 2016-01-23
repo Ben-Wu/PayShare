@@ -1,11 +1,13 @@
 package pennapps2016.payshare.utils;
 
+import android.os.AsyncTask;
 import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -51,5 +53,40 @@ public class NetworkHelper {
                 .build();
         Response response = client.newCall(request).execute();
         return new JSONObject(response.body().string());
+    }
+
+    public static String getWithAsync(String url){
+        try {
+            return new getAsync().execute(url).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private static class getAsync extends AsyncTask<String,Void,String>{
+
+        @Override
+        protected String doInBackground(String... params) {
+            Log.d(TAG, "GET JSON from: " + params[0]);
+
+            OkHttpClient client = new OkHttpClient();
+
+            Request request = new Request.Builder()
+                    .url(params[0])
+                    .build();
+
+            Response response = null;
+            String s = null;
+            try {
+                response = client.newCall(request).execute();
+                s = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return s;
+        }
     }
 }
