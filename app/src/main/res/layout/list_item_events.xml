@@ -61,30 +61,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Made by"
-                android:id="@+id/creator"
-                android:layout_alignBottom="@+id/title"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:textStyle="italic"
-                android:textSize="12sp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
-                android:textColor="#000" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="Description"
                 android:id="@+id/description"
-                android:paddingBottom="8dp"
+                android:paddingBottom="14dp"
                 android:textColor="#000" />
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:weightSum="2">
+                android:weightSum="3">
 
                 <LinearLayout
                     android:orientation="horizontal"
@@ -128,6 +114,27 @@
                         android:textColor="#000" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView3"
+                        android:src="@drawable/ic_create_blue_300_18dp"
+                        android:paddingRight="6dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Creator"
+                        android:id="@+id/creator"
+                        android:textColor="#000" />
+                    </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -148,7 +148,7 @@ public class EventsListActivity extends AppCompatActivity {
             ((TextView)convertView.findViewById(R.id.description)).setText(events.get(position).description);
             ((TextView)convertView.findViewById(R.id.people_count)).setText(""+events.get(position).users.size());
             ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.size());
-            ((TextView)convertView.findViewById(R.id.creator)).setText("Made by: "+events.get(position).creator_username);
+            ((TextView)convertView.findViewById(R.id.creator)).setText(events.get(position).creator_username);
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
