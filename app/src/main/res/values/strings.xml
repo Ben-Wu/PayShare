@@ -11,4 +11,6 @@
     <string name="create_acc_cancel">cancel</string>
     <string name="create_acc_create">create</string>
 
+    <string name="base_url">http://li832-151.members.linode.com/</string>
+
 </resources>
