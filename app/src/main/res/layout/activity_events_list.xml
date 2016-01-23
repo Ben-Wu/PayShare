@@ -8,6 +8,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/events_listview"
         android:layout_gravity="center_horizontal"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:choiceMode="none" />
 
     <android.support.design.widget.FloatingActionButton
