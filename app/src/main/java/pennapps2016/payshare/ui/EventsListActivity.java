@@ -102,14 +102,15 @@ public class EventsListActivity extends AppCompatActivity {
                 event.title = object.getString("title");
                 event.creator_username = object.getString("creator_username");
                 event.date = object.getString("date");
-                for (String a : object.getString("users").split(",")) {
+                event.shares = object.getJSONArray("shares");
+                /*for (String a : object.getString("users").split(",")) {
                     event.users.add(a);
-                }
-                if (!object.getString("shares").equals("")) {
+                }*/
+                /*if (!object.getString("shares").equals("")) {
                     for (String a : object.getString("shares").split(",")) {
                         event.shares.add(a);
                     }
-                }
+                }*/
                 events.add(event);
             }catch (org.json.JSONException e){
                 Log.d("event fucked up", e.getMessage());
@@ -152,7 +153,7 @@ public class EventsListActivity extends AppCompatActivity {
             ((TextView)convertView.findViewById(R.id.title)).setText(events.get(position).title);
             ((TextView)convertView.findViewById(R.id.description)).setText(events.get(position).description);
             ((TextView)convertView.findViewById(R.id.people_count)).setText(""+events.get(position).users.size());
-            ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.size());
+            ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.length());
             ((TextView)convertView.findViewById(R.id.creator)).setText(events.get(position).creator_username);
 
             convertView.setOnClickListener(new View.OnClickListener() {

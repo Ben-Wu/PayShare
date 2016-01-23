@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -95,8 +96,8 @@ public class CreateEventActivity extends AppCompatActivity {
                 object.put("creator", creatorId);
                 object.put("date", date);
                 object.put("location", location);
-                object.put("users", "");
-                object.put("shares", "");
+                object.put("users", creatorId);
+                object.put("shares", new JSONArray());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
