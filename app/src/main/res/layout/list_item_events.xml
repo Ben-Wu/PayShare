@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/view"
         android:layout_gravity="center_horizontal"
-        android:clickable="true"
-        android:background="?attr/selectableItemBackground"
+        android:foreground="?android:attr/selectableItemBackground"
         android:layout_margin="16dp"
         card_view:cardElevation="2dp">
 

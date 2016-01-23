@@ -141,7 +141,9 @@ public class EventsListActivity extends AppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-            convertView = inflater.inflate(R.layout.list_item_events,null,false);
+            if(convertView==null) {
+                convertView = inflater.inflate(R.layout.list_item_events, parent, false);
+            }
             ((TextView)convertView.findViewById(R.id.title)).setText(events.get(position).title);
             ((TextView)convertView.findViewById(R.id.description)).setText(events.get(position).description);
             ((TextView)convertView.findViewById(R.id.people_count)).setText(""+events.get(position).users.size());
