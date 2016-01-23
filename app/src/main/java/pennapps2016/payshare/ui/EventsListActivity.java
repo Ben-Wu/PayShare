@@ -80,6 +80,7 @@ public class EventsListActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = pref.edit();
             editor.putString(LoginActivity.PREF_USER,"-1");
             editor.putString(LoginActivity.PREF_PASSWORD,"-1");
+            editor.putString(LoginActivity.PREF_ID,"-1");
             editor.apply();
             finish();
             return true;
@@ -93,17 +94,22 @@ public class EventsListActivity extends AppCompatActivity {
         for (int i = 0; i< array.length();i++){
             JSONObject object= (JSONObject) array.get(i);
             Event event = new Event();
-            event.creator = object.getString("creator");
-            event.description = object.getString("description");
-            event.location = object.getString("location");
-            event.title = object.getString("title");
-            for (String a : object.getString("users").split(",")){
-                event.users.add(a);
+            String x = NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"users/id_search/"+object.getString("creator"));
+            if(!x.equals("null")) {
+                event.creator = (new JSONObject(x).getString("name"));
+                event.description = object.getString("description");
+                event.location = object.getString("location");
+                event.title = object.getString("title");
+                for (String a : object.getString("users").split(",")) {
+                    event.users.add(a);
+                }
+                if(!object.getString("shares").equals("")){
+                    for (String a : object.getString("shares").split(",")) {
+                        event.shares.add(a);
+                    }
+                }
+                events.add(event);
             }
-            for (String a : object.getString("shares").split(",")){
-                event.shares.add(a);
-            }
-            events.add(event);
         }
         ((ListView)findViewById(R.id.events_listview)).setAdapter(new EventsListAdapter());
     }
