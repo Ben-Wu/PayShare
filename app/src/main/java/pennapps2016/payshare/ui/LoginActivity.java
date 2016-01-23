@@ -8,8 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -149,15 +152,83 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void createAccount() {
-        findViewById(R.id.name).setVisibility(View.VISIBLE);
-        findViewById(R.id.password_confirm).setVisibility(View.VISIBLE);
+        final TextView header = (TextView) findViewById(R.id.login_header);
+
+        Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+
+        header.setText("Create Account");
+
+        final View name = findViewById(R.id.name);
+        final View username = findViewById(R.id.username_field);
+        final View password = findViewById(R.id.password_field);
+        final View confirmPassword = findViewById(R.id.password_confirm);
+        final View loginButts = findViewById(R.id.login_butts);
+
+        Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down_one);
+
+        password.startAnimation(slideDown);
+        username.startAnimation(slideDown);
+        loginButts.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_down_two));
+
+        slideDown.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                name.setVisibility(View.VISIBLE);
+                confirmPassword.setVisibility(View.VISIBLE);
+                name.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));
+                confirmPassword.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
         ((Button)findViewById(R.id.login_new_acc)).setText("Cancel");
         findViewById(R.id.login_new_acc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findViewById(R.id.name).setVisibility(View.GONE);
-                findViewById(R.id.password_confirm).setVisibility(View.GONE);
+                Animation fadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
+                final Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up_one);
+                final Animation slideUpTwo = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up_two);
+
+                name.startAnimation(fadeOut);
+                confirmPassword.startAnimation(fadeOut);
+                loginButts.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down_two));
+
+                username.startAnimation(slideUp);
+                password.startAnimation(slideUp);
+                loginButts.startAnimation(slideUpTwo);
+
+                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        name.setVisibility(View.GONE);
+                        confirmPassword.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+                });
+
                 ((Button)findViewById(R.id.login_new_acc)).setText("New Account");
+                header.setText("Login");
+
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        createAccount();
+                    }
+                });
             }
         });
 
