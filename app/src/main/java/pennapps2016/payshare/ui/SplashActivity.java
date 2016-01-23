@@ -36,6 +36,12 @@ public class SplashActivity extends Activity {
         mSplashTimer.cancel();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSplashTimer.start();
+    }
+
     private void startLoginActivity() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
