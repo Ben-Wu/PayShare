@@ -98,7 +98,7 @@ public class EventsListActivity extends AppCompatActivity {
             event.description = object.getString("description");
             event.location = object.getString("location");
             event.title = object.getString("title");
-            event.creator_name = object.getString("creator_name");
+            event.creator_username = object.getString("creator_username");
             event.date = object.getString("date");
             for (String a : object.getString("users").split(",")) {
                 event.users.add(a);
@@ -141,12 +141,12 @@ public class EventsListActivity extends AppCompatActivity {
         @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-            convertView = inflater.inflate(R.layout.list_item_events,null);
+            convertView = inflater.inflate(R.layout.list_item_events,null,false);
             ((TextView)convertView.findViewById(R.id.title)).setText(events.get(position).title);
             ((TextView)convertView.findViewById(R.id.description)).setText(events.get(position).description);
             ((TextView)convertView.findViewById(R.id.people_count)).setText(""+events.get(position).users.size());
             ((TextView)convertView.findViewById(R.id.payment_count)).setText(""+events.get(position).shares.size());
-            ((TextView)convertView.findViewById(R.id.creator)).setText("Made by: "+events.get(position).creator);
+            ((TextView)convertView.findViewById(R.id.creator)).setText("Made by: "+events.get(position).creator_username);
 
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
