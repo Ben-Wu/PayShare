@@ -7,7 +7,7 @@ import java.util.ArrayList;
  * Created by David on 1/23/2016.
  */
 public class Event implements Serializable {
-    String id, title, description,location,creator;
-    ArrayList<String> users;
-    ArrayList<String> shares;
+    public String id, title, description,location,creator;
+    public ArrayList<String> users;
+    public ArrayList<String> shares;
 }
