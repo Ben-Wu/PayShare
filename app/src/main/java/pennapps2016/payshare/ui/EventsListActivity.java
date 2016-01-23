@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,21 +95,25 @@ public class EventsListActivity extends AppCompatActivity {
         for (int i = 0; i< array.length();i++){
             JSONObject object= (JSONObject) array.get(i);
             Event event = new Event();
-            event.creator = object.getString("creator");
-            event.description = object.getString("description");
-            event.location = object.getString("location");
-            event.title = object.getString("title");
-            event.creator_username = object.getString("creator_username");
-            event.date = object.getString("date");
-            for (String a : object.getString("users").split(",")) {
-                event.users.add(a);
-            }
-            if(!object.getString("shares").equals("")){
-                for (String a : object.getString("shares").split(",")) {
-                    event.shares.add(a);
+            try {
+                event.creator = object.getString("creator");
+                event.description = object.getString("description");
+                event.location = object.getString("location");
+                event.title = object.getString("title");
+                event.creator_username = object.getString("creator_username");
+                event.date = object.getString("date");
+                for (String a : object.getString("users").split(",")) {
+                    event.users.add(a);
                 }
+                if (!object.getString("shares").equals("")) {
+                    for (String a : object.getString("shares").split(",")) {
+                        event.shares.add(a);
+                    }
+                }
+                events.add(event);
+            }catch (org.json.JSONException e){
+                Log.d("event fucked up", e.getMessage());
             }
-            events.add(event);
         }
         ((ListView)findViewById(R.id.events_listview)).setAdapter(new EventsListAdapter());
     }
