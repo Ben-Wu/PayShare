@@ -9,7 +9,7 @@
     <RelativeLayout
         android:clipToPadding="false"
         android:layout_width="match_parent"
-        android:layout_height="205dp"
+        android:layout_height="185dp"
         android:paddingBottom="5dp"
         android:focusable="false">
 
@@ -19,7 +19,7 @@
             android:layout_height="170dp"
             android:src="@drawable/eventimage"
             android:transitionName="image_start"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="15dp"
             android:scaleType="centerCrop" />
 
         <android.support.design.widget.FloatingActionButton

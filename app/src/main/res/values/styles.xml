@@ -9,7 +9,7 @@
         <!-- Customize your theme here. -->
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
-        <item name="colorControlHighlight">@color/ripple_material_dark</item>
+        <item name="colorControlHighlight">@color/ripple_material_light</item>
 
     </style>
 </resources>
