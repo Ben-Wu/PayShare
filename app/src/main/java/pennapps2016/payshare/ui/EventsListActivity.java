@@ -50,7 +50,8 @@ public class EventsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CreateEventActivity.class);
-                startActivity(intent);
+                Bundle args = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.activity_expand_in_br, R.anim.fade_out_slow).toBundle();
+                startActivity(intent, args);
             }
         });
     }
