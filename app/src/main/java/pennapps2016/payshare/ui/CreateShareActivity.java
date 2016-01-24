@@ -12,6 +12,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -131,6 +133,13 @@ public class CreateShareActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_create_share, menu);
+        return true;
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == KEY_DELIVERY_REQUEST && resultCode == Activity.RESULT_OK) {
             Toast.makeText(this, "Delivery sent!", Toast.LENGTH_LONG).show();
@@ -168,6 +177,14 @@ public class CreateShareActivity extends AppCompatActivity {
             case android.R.id.home:
                 this.finish();
                 return true;
+            case R.id.done:
+                try {
+                    submit(null);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
