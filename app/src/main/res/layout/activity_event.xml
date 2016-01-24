@@ -140,7 +140,7 @@
     </LinearLayout>
 
     <TextView
-        android:text="Shares"
+        android:text="Shared Prices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:allowUndo="false"
@@ -148,15 +148,13 @@
         android:paddingRight="16dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:background="#fff"
-        android:elevation="2dp" />
+        android:background="#fff" />
 
     <ListView
         android:id="@+id/shares_list"
-        android:layout_margin="10dp"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>
