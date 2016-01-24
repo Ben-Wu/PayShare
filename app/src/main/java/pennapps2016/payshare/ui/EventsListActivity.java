@@ -100,7 +100,9 @@ public class EventsListActivity extends AppCompatActivity {
         }
         if(id==R.id.profile){
             Intent i = new Intent(EventsListActivity.this,UserProfileActivity.class);
-            startActivity(i);
+            Bundle args = ActivityOptions.makeCustomAnimation(getApplicationContext(),
+                    R.anim.activity_expand_in_tr, R.anim.fade_out_slow).toBundle();
+            startActivity(i, args);
         }
 
         return super.onOptionsItemSelected(item);
@@ -181,5 +183,11 @@ public class EventsListActivity extends AppCompatActivity {
             });
             return convertView;
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.fade_in_slow, R.anim.activity_slide_out_right);
     }
 }

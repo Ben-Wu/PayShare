@@ -237,4 +237,10 @@ public class DeliveryActivity extends AppCompatActivity {
         this.finish();
         return super.onNavigateUp();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.fade_in_slow, R.anim.activity_slide_out_right);
+    }
 }

@@ -85,7 +85,9 @@ public class EventActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(EventActivity.this, CreateShareActivity.class);
                 i.putExtra("event", event);
-                startActivity(i);
+                Bundle args = ActivityOptions.makeCustomAnimation(getApplicationContext(),
+                        R.anim.activity_expand_in_r, R.anim.fade_out_slow).toBundle();
+                startActivity(i, args);
             }
         });
 

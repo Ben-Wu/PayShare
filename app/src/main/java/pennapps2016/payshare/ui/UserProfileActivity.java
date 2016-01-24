@@ -125,4 +125,10 @@ public class UserProfileActivity extends AppCompatActivity{
             return convertView;
         }
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.fade_in_slow, R.anim.activity_slide_out_right);
+    }
 }
