@@ -217,7 +217,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-<<<<<<< HEAD
                 ((Button)findViewById(R.id.login_new_acc)).setText("New Account");
                 header.setText("Login");
 
@@ -228,8 +227,6 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
-=======
->>>>>>> d7a67d9d56601d6bf6e37b1f6db436bc5d8fe0e0
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
