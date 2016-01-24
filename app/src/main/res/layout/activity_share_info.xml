@@ -5,9 +5,11 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="20dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout3">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -120,12 +122,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/sharee_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linearLayout3" />
 
     <ProgressBar
         android:id="@+id/login_loading"
