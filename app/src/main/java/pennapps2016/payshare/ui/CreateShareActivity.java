@@ -118,6 +118,7 @@ public class CreateShareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DeliveryActivity.class);
+                intent.putExtra("address", event.location);
                 startActivity(intent);
             }
         });

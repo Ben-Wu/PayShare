@@ -2,6 +2,7 @@ package pennapps2016.payshare.ui;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.AsyncTask;
@@ -18,6 +19,9 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,6 +36,8 @@ import pennapps2016.payshare.utils.NetworkHelper;
  * Created by BenWu on 2016-01-23.
  */
 public class CreateEventActivity extends AppCompatActivity {
+
+    public static final int PICKER_REQUEST = 6968;
 
     private String mBaseUrl;
 
@@ -127,5 +133,32 @@ public class CreateEventActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             ((Button) findViewById(R.id.date_pick_butt)).setText(String.format("%s %s, %s", mMonthWords[month], day, year));
         }
+    }
+
+    public void chooseLocation(View view) {
+        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+
+        try {
+            startActivityForResult(intentBuilder.build(this), PICKER_REQUEST);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK) {
+            if (requestCode == PICKER_REQUEST) {
+                Place place = PlacePicker.getPlace(data, this);
+                if(place != null) {
+                    String address = place.getAddress().toString();
+                    if(address.length() == 0) {
+                        address = "(" + place.getLatLng().longitude + ", " + place.getLatLng().latitude + ")";
+                    }
+                    ((EditText) findViewById(R.id.create_event_location)).setText(address);
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

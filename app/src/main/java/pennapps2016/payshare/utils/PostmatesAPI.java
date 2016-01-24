@@ -1,6 +1,9 @@
 package pennapps2016.payshare.utils;
 
+import android.app.Activity;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.okhttp.Authenticator;
 import com.squareup.okhttp.Call;
@@ -22,8 +25,8 @@ public class PostmatesAPI {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static final String baseUrl = "https://api.postmates.com/v1/";
 
-    private static final String customerId = "";
-    private static final String authKey = "";
+    private static final String customerId = "cus_KeF2PZKq_g8vFV";
+    private static final String authKey = "c667274e-e4a6-420c-879c-cef00bcfc967";
 
     private OkHttpClient client;
 

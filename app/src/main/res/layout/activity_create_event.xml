@@ -53,6 +53,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/choose_location"
+        android:text="Choose location on a map"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:onClick="chooseLocation"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
