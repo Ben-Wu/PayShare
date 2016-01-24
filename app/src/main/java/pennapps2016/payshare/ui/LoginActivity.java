@@ -74,6 +74,8 @@ public class LoginActivity extends AppCompatActivity {
         String username = ((EditText) findViewById(R.id.username_field)).getText().toString();
         String password = ((EditText) findViewById(R.id.password_field)).getText().toString();
 
+        findViewById(R.id.login_loading).setVisibility(View.VISIBLE);
+
         new VerifyLoginTask().execute(username, password);
     }
 
@@ -101,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result) {
+            findViewById(R.id.login_loading).setVisibility(View.INVISIBLE);
             if(result == null) {
                 SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = pref.edit();
@@ -161,8 +164,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void createAccount() {
         final TextView header = (TextView) findViewById(R.id.login_header);
-
-        Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
 
         header.setText("Create Account");
 

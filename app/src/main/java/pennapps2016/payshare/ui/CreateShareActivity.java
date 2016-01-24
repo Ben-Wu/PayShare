@@ -1,6 +1,7 @@
 package pennapps2016.payshare.ui;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -56,11 +57,11 @@ public class CreateShareActivity extends AppCompatActivity {
                 users = new HashMap<>();
                 try {
                     //add to the hashmap of all people
-                    JSONArray array = new JSONArray(NetworkHelper.getWithAsync(getString(R.string.base_url)+"users"));
-                    for (int i = 0; i<array.length(); i++){
-                        JSONObject user  = ((JSONObject)array.get(i));
+                    JSONArray array = new JSONArray(NetworkHelper.getWithAsync(getString(R.string.base_url) + "users"));
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject user = ((JSONObject) array.get(i));
                         //add anyone but the creator!
-                        if(!user.getString("_id").equals(event.creator)&&event.users.contains(user.getString("_id"))) {
+                        if (!user.getString("_id").equals(event.creator) && event.users.contains(user.getString("_id"))) {
                             users.put(user.getString("name") + " (" + user.getString("user") + ")", user.getString("_id"));
                         }
                     }
@@ -69,12 +70,11 @@ public class CreateShareActivity extends AppCompatActivity {
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(CreateShareActivity.this);
                 builder.setTitle("Choose Users");
-                final CharSequence[] keys  =users.keySet().toArray(new CharSequence[users.keySet().size()]);
+                final CharSequence[] keys = users.keySet().toArray(new CharSequence[users.keySet().size()]);
                 final boolean[] chosens = new boolean[keys.length];
                 //find who should already be checked!
-                for (int i =0 ; i < chosens.length; i++){
-                        chosens[i] = true;
-
+                for (int i = 0; i < chosens.length; i++) {
+                    chosens[i] = false;
                 }
                 builder.setMultiChoiceItems(keys,
                         chosens,
@@ -84,7 +84,7 @@ public class CreateShareActivity extends AppCompatActivity {
                                 if (isChecked) {
                                     //update event
                                     share.people.add(users.get(keys[which]));
-                                }else {
+                                } else {
                                     share.people.remove(users.get(keys[which]));
                                 }
                             }
@@ -102,9 +102,9 @@ public class CreateShareActivity extends AppCompatActivity {
                         JSONObject object = new JSONObject();
                         try {
                             //save and update event
-                            updateFields.put("users",android.text.TextUtils.join(",", event.users));
-                            object.put("$set",updateFields);
-                            NetworkHelper.postWithAsync(getString(R.string.base_url)+"events/id_search/"+event.id,object);
+                            updateFields.put("users", android.text.TextUtils.join(",", event.users));
+                            object.put("$set", updateFields);
+                            NetworkHelper.postWithAsync(getString(R.string.base_url) + "events/id_search/" + event.id, object);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -113,6 +113,15 @@ public class CreateShareActivity extends AppCompatActivity {
                 builder.show();
             }
         });
+
+        findViewById(R.id.delivery_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DeliveryActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void submit(View view) throws JSONException {

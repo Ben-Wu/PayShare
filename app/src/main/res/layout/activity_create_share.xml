@@ -85,6 +85,14 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Request a Delivery"
+        android:id="@+id/delivery_button" />
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="DONE"
         android:onClick="submit"
         android:id="@+id/submit" />
