@@ -47,7 +47,7 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
         event = (Event) getIntent().getSerializableExtra("event");
 
-
+        setTitle("Event");
     }
 
     @Override
@@ -130,7 +130,6 @@ public class EventActivity extends AppCompatActivity {
                     chosens[i] = false;
                 }
             }
-            setTitle(event.title);
             builder.setMultiChoiceItems(keys,
                     chosens,
                     new DialogInterface.OnMultiChoiceClickListener() {

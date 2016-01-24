@@ -54,6 +54,8 @@ public class EventsListActivity extends AppCompatActivity {
                 startActivity(intent, args);
             }
         });
+
+        setTitle("Public Events");
     }
 
     @Override

@@ -181,7 +181,7 @@ public class CreateShareActivity extends AppCompatActivity {
         event = new Event(objectback);
         setUp();
     }
-    public void submit(View view) throws JSONException {
+    public boolean submit(View view) throws JSONException {
         String title = ((TextView)findViewById(R.id.title)).getText().toString();
         String descr = ((TextView)findViewById(R.id.description)).getText().toString();
         double price  = Double.parseDouble(((TextView)findViewById(R.id.price)).getText().toString());
@@ -193,10 +193,11 @@ public class CreateShareActivity extends AppCompatActivity {
             share.o_payer = pref.getString(LoginActivity.PREF_ID,"-1");
             share.price = price;
             event.shares.add(share);
-            NetworkHelper.postWithAsync(getString(R.string.base_url)+"events/id_search/"+event.id,event.toJSONObject());
-            finish();
+            NetworkHelper.postWithAsync(getString(R.string.base_url) + "events/id_search/" + event.id, event.toJSONObject());
+            return true;
         }else{
             Snackbar.make(findViewById(R.id.master),"Please input valid data",Snackbar.LENGTH_SHORT).show();
+            return false;
         }
     }
     @Override
@@ -240,10 +241,11 @@ public class CreateShareActivity extends AppCompatActivity {
             builder.setMessage("How would you like to pay?")
                     .setPositiveButton("Credit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/56a45b5921bb0b0e00905eba/45/card_id/"
-                                    + pref.getString(LoginActivity.PREF_CREDIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
                             try {
                                 submit(null);
+                                NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/56a45b5921bb0b0e00905eba/45/card_id/"
+                                        + pref.getString(LoginActivity.PREF_CREDIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
+                                finish();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -255,10 +257,11 @@ public class CreateShareActivity extends AppCompatActivity {
                     })
                     .setNegativeButton("Debit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/"
-                                    + pref.getString(LoginActivity.PREF_DEBIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
                             try {
                                 submit(null);
+                                NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/"
+                                        + pref.getString(LoginActivity.PREF_DEBIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
+                                finish();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

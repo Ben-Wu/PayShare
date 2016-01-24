@@ -64,6 +64,8 @@ public class DeliveryActivity extends AppCompatActivity {
         mPostmateApi = new PostmatesAPI();
         mName = pref.getString(LoginActivity.PREF_USER, "No name");
         mAddress = getIntent().getStringExtra("address");
+
+        setTitle("Request a Delivery");
     }
 
     public void chooseLocation(View view) {

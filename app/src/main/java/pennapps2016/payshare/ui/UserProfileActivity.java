@@ -31,6 +31,8 @@ public class UserProfileActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
+        setTitle("Profile");
+
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String response = NetworkHelper.getWithAsync(getString(R.string.payments_url)+"customers/"+pref.getString(LoginActivity.PREF_CUST_ID,"-1"));
         ((TextView)findViewById(R.id.username)).setText(pref.getString(LoginActivity.PREF_USER,"-1"));
