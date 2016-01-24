@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="invisible"
+            android:visibility="gone"
             android:background="@color/white_power"
             android:elevation="6dp">
 
@@ -146,6 +146,25 @@
                 android:layout_gravity="center"/>
 
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:src="@drawable/on_demand_delivery_by_postmates_logotype_black"
+            android:layout_margin="5dp"/>
+
+        <TextView
+            android:layout_gravity="center"
+            android:text="and"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/powered_by_google_light"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
 
