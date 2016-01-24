@@ -1,6 +1,8 @@
 package pennapps2016.payshare.ui;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,6 +47,8 @@ public class CreateShareActivity extends AppCompatActivity {
     HashMap<String,String> users;
     Share share;
 
+    SharedPreferences pref;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +56,7 @@ public class CreateShareActivity extends AppCompatActivity {
 
         event = (Event)getIntent().getSerializableExtra("event");
 
+        pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 
     private void setUp(){
@@ -201,11 +206,7 @@ public class CreateShareActivity extends AppCompatActivity {
                 this.finish();
                 return true;
             case R.id.done:
-                try {
-                    submit(null);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                new PaymentTypeDialog().show(getFragmentManager(), "payment");
                 return true;
 
         }
@@ -229,5 +230,42 @@ public class CreateShareActivity extends AppCompatActivity {
         ((RadioButton)findViewById(R.id.blue)).setChecked(false);
         ((RadioButton)view).setChecked(true);
         share.tag = ((RadioButton)view).getText().toString().toLowerCase();
+    }
+
+    public class PaymentTypeDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage("How would you like to pay?")
+                    .setPositiveButton("Credit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/56a45b5921bb0b0e00905eba/45/card_id/"
+                                    + pref.getString(LoginActivity.PREF_CREDIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
+                            try {
+                                submit(null);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    })
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                        }
+                    })
+                    .setNegativeButton("Debit", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/"
+                                    + pref.getString(LoginActivity.PREF_DEBIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
+                            try {
+                                submit(null);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 }
