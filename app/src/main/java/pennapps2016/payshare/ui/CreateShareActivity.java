@@ -1,5 +1,6 @@
 package pennapps2016.payshare.ui;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,8 @@ import pennapps2016.payshare.utils.NetworkHelper;
  * Created by David on 1/23/2016.
  */
 public class CreateShareActivity extends AppCompatActivity {
+
+    private final int KEY_DELIVERY_REQUEST = 9943;
 
     private Event event;
     HashMap<String,String> users;
@@ -120,10 +124,24 @@ public class CreateShareActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), DeliveryActivity.class);
                 intent.putExtra("address", event.location);
-                startActivity(intent);
+                startActivityForResult(intent, KEY_DELIVERY_REQUEST);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == KEY_DELIVERY_REQUEST && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(this, "Delivery sent!", Toast.LENGTH_LONG).show();
+            ((EditText) findViewById(R.id.description)).setText(
+                    "Delivery from " + data.getStringExtra("pickup name")
+                            + " by Postmates: " + data.getStringExtra("pickup cost") + "\n"
+                            + ((EditText) findViewById(R.id.description)).getText());
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void submit(View view) throws JSONException {
