@@ -49,6 +49,7 @@ public class CreateShareActivity extends AppCompatActivity {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         share.people.add(pref.getString(LoginActivity.PREF_ID,"-1"));
 
+        setTitle("Add a Share");
         ((Button) findViewById(R.id.choose)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

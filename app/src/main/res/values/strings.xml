@@ -12,5 +12,6 @@
     <string name="create_acc_create">create</string>
 
     <string name="base_url">http://li832-151.members.linode.com/</string>
+    <string name="payments_url">http://li832-151.members.linode.com:3000/</string>
 
 </resources>

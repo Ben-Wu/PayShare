@@ -88,15 +88,24 @@ public class EventsListActivity extends AppCompatActivity {
             editor.putString(LoginActivity.PREF_USER,"-1");
             editor.putString(LoginActivity.PREF_PASSWORD,"-1");
             editor.putString(LoginActivity.PREF_ID,"-1");
+            editor.putString(LoginActivity.PREF_CREDIT,"-1");
+            editor.putString(LoginActivity.PREF_DEBIT,"-1");
+            editor.putString(LoginActivity.PREF_CUST_ID,"-1");
             editor.apply();
             finish();
             return true;
+        }
+        if(id==R.id.profile){
+            Intent i = new Intent(EventsListActivity.this,UserProfileActivity.class);
+            startActivity(i);
         }
 
         return super.onOptionsItemSelected(item);
     }
     public void getEvents() throws IOException, JSONException {
         events = new ArrayList<>();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String myid = pref.getString(LoginActivity.PREF_ID,"-1");
         JSONArray array = new JSONArray(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"events"));
         for (int i = 0; i< array.length();i++){
             JSONObject object= (JSONObject) array.get(i);
@@ -109,19 +118,23 @@ public class EventsListActivity extends AppCompatActivity {
                 event.creator_username = object.getString("creator_username");
                 event.date = object.getString("date");
                 event.id = object.getString("_id");
+                //check if allowed to see
+                boolean visible =false;
                 for (String a : object.getString("users").split(",")) {
                     event.users.add(a);
                 }
-                //load shares
-                JSONArray shares = object.getJSONArray("shares");
-                if (object.getJSONArray("shares").length()>0) {
-                    for (int j = 0; j<shares.length();j++) {
-                        JSONObject shareJSON  = (JSONObject) shares.get(j);
-                        Share share = new Share(shareJSON);
-                        event.shares.add(share);
+                if(event.users.contains(myid)) {
+                    //load shares
+                    JSONArray shares = object.getJSONArray("shares");
+                    if (object.getJSONArray("shares").length() > 0) {
+                        for (int j = 0; j < shares.length(); j++) {
+                            JSONObject shareJSON = (JSONObject) shares.get(j);
+                            Share share = new Share(shareJSON);
+                            event.shares.add(share);
+                        }
                     }
+                    events.add(event);
                 }
-                events.add(event);
             }catch (org.json.JSONException e){
                 Log.d("event fucked up", e.getMessage());
             }

@@ -32,7 +32,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     public static final String KEY_USERNAME = "USERNAME",
-    PREF_USER= "PREF_USERNAME",PREF_PASSWORD = "PREF_PASSWORD", PREF_ID = "PREF_ID";
+    PREF_USER= "PREF_USERNAME",PREF_PASSWORD = "PREF_PASSWORD", PREF_ID = "PREF_ID",
+            PREF_CUST_ID = "PREF_CUST_ID", PREF_DEBIT = "PREF_DEBIT", PREF_CREDIT = "PREF_CREDIT";
 
     private String mBaseUrl;
 
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle("Log In/Register");
 
         mBaseUrl = getResources().getString(R.string.base_url);
 
@@ -105,6 +107,9 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString(PREF_USER,"-1");
                 editor.putString(PREF_PASSWORD,"-1");
                 editor.putString(PREF_ID,"-1");
+                editor.putString(PREF_CREDIT,"-1");
+                editor.putString(PREF_DEBIT,"-1");
+                editor.putString(PREF_CUST_ID,"-1");
                 editor.apply();
                 showErrorMessage();
                 return;
@@ -127,6 +132,9 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString(PREF_USER,username);
                             editor.putString(PREF_PASSWORD,password);
                             editor.putString(PREF_ID,userInfo.getString("_id"));
+                            editor.putString(PREF_CUST_ID,userInfo.getString("custId"));
+                            editor.putString(PREF_CREDIT,userInfo.getString("credit"));
+                            editor.putString(PREF_DEBIT,userInfo.getString("debit"));
                             editor.apply();
                             Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
                             intent.putExtra(KEY_USERNAME, username); // next activity will know the user
@@ -256,10 +264,13 @@ public class LoginActivity extends AppCompatActivity {
         private String username;
         private String password;
         private String name;
+        private String debit;
+        private String credit;
+        private String cust_id;
 
         @Override
         protected JSONObject doInBackground(String... params) {
-            JSONObject json = null;
+            JSONObject json=null,json2 = null;
 
             username = params[0];
             password = params[1];
@@ -275,6 +286,16 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             try {
+                JSONObject accountDetails = new JSONObject();
+                accountDetails.put("first_name",name);
+                accountDetails.put("last_name",username);
+                json2 = NetworkHelper.post(getString(R.string.payments_url) + "customers/",accountDetails.toString());
+                object.put("custId",json2.getString("custid"));
+                cust_id = json2.getString("custid");
+                debit = json2.getString("debit");
+                credit = json2.getString("credit");
+                object.put("debit",json2.getString("debit"));
+                object.put("credit",json2.getString("credit"));
                 json = NetworkHelper.post(mBaseUrl + "users",object.toString());
                 Log.e(TAG, json.toString());
             } catch (IOException e) {
@@ -294,6 +315,9 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString(PREF_USER,"-1");
                 editor.putString(PREF_PASSWORD,"-1");
                 editor.putString(PREF_ID,"-1");
+                editor.putString(PREF_CREDIT,"-1");
+                editor.putString(PREF_DEBIT,"-1");
+                editor.putString(PREF_CUST_ID,"-1");
                 editor.apply();
                 showErrorMessage();
                 return;
@@ -307,7 +331,10 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString(PREF_USER,username);
                     editor.putString(PREF_PASSWORD,password);
-                    editor.putString(PREF_PASSWORD,result.getJSONArray("insertedIds").get(0).toString());
+                    editor.putString(PREF_ID,result.getJSONArray("insertedIds").get(0).toString());
+                    editor.putString(PREF_CREDIT,credit);
+                    editor.putString(PREF_DEBIT,debit);
+                    editor.putString(PREF_CUST_ID,cust_id);
                     editor.apply();
                     Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
                     intent.putExtra(KEY_USERNAME, username); // next activity will know the user

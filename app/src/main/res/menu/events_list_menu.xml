@@ -3,4 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools" >
     <item android:id="@+id/action_settings" android:title="LOG OUT"
         android:orderInCategory="100" app:showAsAction="always" />
+    <item android:id="@+id/profile" android:icon="@drawable/ic_person_white_24dp"
+        android:orderInCategory="100" app:showAsAction="always"
+        android:title="MY ACCOUNT" />
 </menu>

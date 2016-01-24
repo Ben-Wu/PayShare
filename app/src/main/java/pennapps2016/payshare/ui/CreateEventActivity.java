@@ -50,6 +50,8 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+        setTitle("Add an Event");
+
         findViewById(R.id.create_event_create).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

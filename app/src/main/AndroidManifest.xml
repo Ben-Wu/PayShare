@@ -28,6 +28,7 @@
         <activity android:name=".ui.CreateShareActivity" android:parentActivityName=".ui.EventActivity"/>
 
         <activity android:name=".ui.ShareInfoActivity" android:parentActivityName=".ui.EventActivity"/>
+        <activity android:name=".ui.UserProfileActivity" android:parentActivityName=".ui.EventActivity"/>
 
     </application>
 
