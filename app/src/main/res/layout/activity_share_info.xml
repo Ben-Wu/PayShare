@@ -26,8 +26,7 @@
                 android:textSize="22sp"
                 android:fontFamily="sans-serif-light"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:capitalize="words" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/share_desc"
