@@ -220,4 +220,15 @@ public class DeliveryActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        this.finish();
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        this.finish();
+        return super.onNavigateUp();
+    }
 }
