@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import pennapps2016.payshare.R;
 
@@ -27,7 +28,6 @@ public class SplashActivity extends Activity {
                 startLoginActivity();
             }
         };
-        mSplashTimer.start();
     }
 
     @Override
@@ -43,6 +43,7 @@ public class SplashActivity extends Activity {
     }
 
     private void startLoginActivity() {
+        Log.d("SplashActivity", "Splash finished");
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
