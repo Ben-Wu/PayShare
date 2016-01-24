@@ -244,7 +244,7 @@ public class CreateShareActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             try {
                                 boolean shouldExit = submit(null);
-                                NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/56a45b5921bb0b0e00905eba/45/card_id/"
+                                NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/"
                                         + pref.getString(LoginActivity.PREF_CREDIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
                                 if(shouldExit) {
                                     finish();
