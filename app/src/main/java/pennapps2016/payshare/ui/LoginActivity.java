@@ -232,6 +232,13 @@ public class LoginActivity extends AppCompatActivity {
                 ((Button)findViewById(R.id.login_new_acc)).setText("New Account");
                 header.setText("Login");
 
+                findViewById(R.id.login_go).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        login();
+                    }
+                });
+
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

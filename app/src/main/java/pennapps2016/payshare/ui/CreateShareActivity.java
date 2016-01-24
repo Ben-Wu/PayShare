@@ -51,6 +51,11 @@ public class CreateShareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_share);
 
         event = (Event)getIntent().getSerializableExtra("event");
+
+    }
+
+    private void setUp(){
+
         share = new Share();
         share.tag = "red";
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -129,7 +134,6 @@ public class CreateShareActivity extends AppCompatActivity {
                 startActivityForResult(intent, KEY_DELIVERY_REQUEST);
             }
         });
-
     }
 
     @Override
@@ -153,6 +157,25 @@ public class CreateShareActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            updateSelf();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateSelf() throws JSONException {
+        JSONObject object = new JSONObject();
+        //save and update event
+        object.put("$set", event.toJSONObject());
+        NetworkHelper.postWithAsync(getString(R.string.base_url) + "events/id_search/" + event.id, object);
+        JSONObject objectback = new JSONObject(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"events/id_search/"+event.id));
+        event = new Event(objectback);
+        setUp();
+    }
     public void submit(View view) throws JSONException {
         String title = ((TextView)findViewById(R.id.title)).getText().toString();
         String descr = ((TextView)findViewById(R.id.description)).getText().toString();

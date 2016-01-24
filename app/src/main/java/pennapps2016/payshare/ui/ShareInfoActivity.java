@@ -165,7 +165,7 @@ public class ShareInfoActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.share_title)).setText(event.shares.get(mShare).title);
         ((TextView) findViewById(R.id.share_desc)).setText(event.shares.get(mShare).description);
 
-        ((TextView) findViewById(R.id.total_cost)).setText(String.valueOf(event.shares.get(mShare).price));
+        ((TextView) findViewById(R.id.total_cost)).setText("$"+String.valueOf(event.shares.get(mShare).price));
         ((TextView) findViewById(R.id.individual_cost)).setText(""+costEach);
         try {
             String text = payee.getString("name");

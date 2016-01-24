@@ -9,7 +9,7 @@
         android:background="#fff"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:foreground="@drawable/white_background_ripple"
         android:elevation="4dp">
 
         <ImageView
