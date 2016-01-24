@@ -137,6 +137,7 @@ public class CreateShareActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DeliveryActivity.class);
                 intent.putExtra("address", event.location);
                 startActivityForResult(intent, KEY_DELIVERY_REQUEST);
+                overridePendingTransition(R.anim.activity_slide_in_right, R.anim.fade_out_slow);
             }
         });
     }
@@ -242,26 +243,37 @@ public class CreateShareActivity extends AppCompatActivity {
                     .setPositiveButton("Credit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             try {
-                                submit(null);
-                                NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/56a45b5921bb0b0e00905eba/45/card_id/"
+                                boolean shouldExit = submit(null);
+                                NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/"
                                         + pref.getString(LoginActivity.PREF_CREDIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
-                                finish();
+                                if(shouldExit) {
+                                    finish();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     })
-                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    .setNeutralButton("Already Paid", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            try {
+                                if(submit(null)) {
+                                    finish();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
                     })
                     .setNegativeButton("Debit", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             try {
-                                submit(null);
+                                boolean shouldExit = submit(null);
                                 NetworkHelper.getWithAsync("http://li832-151.members.linode.com:3000/merchant/"
                                         + pref.getString(LoginActivity.PREF_DEBIT, "0") + "/" + ((EditText) findViewById(R.id.price)).getText());
-                                finish();
+                                if (shouldExit) {
+                                    finish();
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -270,5 +282,11 @@ public class CreateShareActivity extends AppCompatActivity {
             // Create the AlertDialog object and return it
             return builder.create();
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.fade_in_slow, R.anim.activity_slide_out_right);
     }
 }

@@ -278,4 +278,10 @@ public class ShareInfoActivity extends AppCompatActivity {
             return event.shares.get(mShare).people.get(position);
         }
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.fade_in_slow, R.anim.activity_slide_out_right);
+    }
 }
