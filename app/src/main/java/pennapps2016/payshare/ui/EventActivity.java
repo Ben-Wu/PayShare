@@ -199,8 +199,9 @@ public class EventActivity extends AppCompatActivity {
             ((TextView)convertView.findViewById(R.id.people_count)).setText(""+event.shares.get(position).people.size());
             ((TextView)convertView.findViewById(R.id.price)).setText(""+event.shares.get(position).price);
             SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            if(event.shares.get(position).people.contains(pref.getString(LoginActivity.PREF_ID,"-1"))){
-                if(event.shares.get(position).people_paid.contains(pref.getString(LoginActivity.PREF_ID,"-1"))){
+            String userID = pref.getString(LoginActivity.PREF_ID,"-1");
+            if(event.shares.get(position).people.contains(userID)){
+                if(event.shares.get(position).people_paid.contains(userID)||(event.shares.get(position).o_payer.equals(userID)&&event.shares.get(position).people_paid.size()+1==event.shares.get(position).people.size())){
                     ((ImageView)convertView.findViewById(R.id.status_icon)).setImageDrawable(getDrawable(R.drawable.ic_check_circle_green_400_24dp));
                 }else{
                     ((ImageView)convertView.findViewById(R.id.status_icon)).setImageDrawable(getDrawable(R.drawable.ic_error_red_400_24dp));
