@@ -46,6 +46,33 @@ public class EventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_event);
         event = (Event) getIntent().getSerializableExtra("event");
 
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.event, menu);
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            updateSelf();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateSelf() throws JSONException {
+        JSONObject object = new JSONObject(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"events/id_search/"+event.id));
+        event = new Event(object);
+        setUp();
+    }
+
+    private void setUp() {
         ((TextView) findViewById(R.id.title)).setText(event.title);
         ((TextView) findViewById(R.id.description)).setText(event.description);
         ((TextView) findViewById(R.id.date)).setText(event.date);
@@ -66,25 +93,11 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ShareInfoActivity.class);
-                intent.putExtra(ShareInfoActivity.KEY_SHARE, event.shares.get(position));
+                intent.putExtra(ShareInfoActivity.KEY_SHARE,position);
                 intent.putExtra(ShareInfoActivity.KEY_EVENT, event);
                 startActivity(intent);
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.event, menu);
-        return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        ((ListView)findViewById(R.id.shares_list)).setAdapter(new SharesListAdapter());
     }
 
     @Override
