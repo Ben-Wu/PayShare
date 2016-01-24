@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -165,21 +166,14 @@ public class LoginActivity extends AppCompatActivity {
     private void createAccount() {
         final TextView header = (TextView) findViewById(R.id.login_header);
 
-        header.setText("Create Account");
-
+        final View window = findViewById(R.id.login_window);
         final View name = findViewById(R.id.name);
-        final View username = findViewById(R.id.username_field);
-        final View password = findViewById(R.id.password_field);
         final View confirmPassword = findViewById(R.id.password_confirm);
-        final View loginButts = findViewById(R.id.login_butts);
 
-        Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down_one);
+        final Animation shrinkUp = AnimationUtils.loadAnimation(this, R.anim.shrink_up);
+        final Animation expandDown = AnimationUtils.loadAnimation(this, R.anim.expand_down);
 
-        password.startAnimation(slideDown);
-        username.startAnimation(slideDown);
-        loginButts.startAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_down_two));
-
-        slideDown.setAnimationListener(new Animation.AnimationListener() {
+        shrinkUp.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
             }
@@ -188,8 +182,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 name.setVisibility(View.VISIBLE);
                 confirmPassword.setVisibility(View.VISIBLE);
-                name.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));
-                confirmPassword.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));
+                window.startAnimation(expandDown);
+                header.setText("Create Account");
+                ((Button) findViewById(R.id.login_new_acc)).setText("Cancel");
             }
 
             @Override
@@ -197,23 +192,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        ((Button)findViewById(R.id.login_new_acc)).setText("Cancel");
+        window.startAnimation(shrinkUp);
+
         findViewById(R.id.login_new_acc).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Animation fadeOut = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
-                final Animation slideUp = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up_one);
-                final Animation slideUpTwo = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up_two);
-
-                name.startAnimation(fadeOut);
-                confirmPassword.startAnimation(fadeOut);
-                loginButts.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_down_two));
-
-                username.startAnimation(slideUp);
-                password.startAnimation(slideUp);
-                loginButts.startAnimation(slideUpTwo);
-
-                fadeOut.setAnimationListener(new Animation.AnimationListener() {
+                window.startAnimation(shrinkUp);
+                shrinkUp.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
                     }
@@ -222,6 +207,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onAnimationEnd(Animation animation) {
                         name.setVisibility(View.GONE);
                         confirmPassword.setVisibility(View.GONE);
+                        window.startAnimation(expandDown);
+                        ((Button) findViewById(R.id.login_new_acc)).setText("New Account");
+                        header.setText("Login");
                     }
 
                     @Override
@@ -229,6 +217,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+<<<<<<< HEAD
                 ((Button)findViewById(R.id.login_new_acc)).setText("New Account");
                 header.setText("Login");
 
@@ -239,10 +228,19 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+=======
+>>>>>>> d7a67d9d56601d6bf6e37b1f6db436bc5d8fe0e0
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         createAccount();
+                    }
+                });
+
+                findViewById(R.id.login_go).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        login();
                     }
                 });
             }

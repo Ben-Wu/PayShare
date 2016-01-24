@@ -10,7 +10,9 @@
         android:id="@+id/imageView9"
         android:background="#6f000000" />
 
-    <LinearLayout android:orientation="vertical"
+    <LinearLayout
+        android:id="@+id/login_window"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="24dp"
@@ -52,22 +54,6 @@
             android:inputType="textPassword"
             android:layout_marginTop="8dp" />
 
-        <Button
-            android:id="@+id/login_go"
-            android:text="@string/login_go"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="8dp" />
-
-        <Button
-            android:id="@+id/login_new_acc"
-            android:text="@string/login_new_acc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp" />
-
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,9 +64,25 @@
 
         <LinearLayout
             android:id="@+id/login_butts"
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end">
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/login_go"
+                android:text="@string/login_go"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/login_new_acc"
+                android:text="@string/login_new_acc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
 
         </LinearLayout>
 
