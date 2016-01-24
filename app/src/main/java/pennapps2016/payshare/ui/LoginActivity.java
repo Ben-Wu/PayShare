@@ -339,6 +339,12 @@ public class LoginActivity extends AppCompatActivity {
                     editor.apply();
                     Intent intent = new Intent(getApplicationContext(), EventsListActivity.class);
                     intent.putExtra(KEY_USERNAME, username); // next activity will know the user
+                    findViewById(R.id.login_go).setOnClickListener(new View.OnClickListener() {
+                       @Override
+                       public void onClick(View v) {
+                           login();
+                       }
+                   });
                     startActivity(intent);
                 } else {
                     Log.d(TAG, "Password bad");

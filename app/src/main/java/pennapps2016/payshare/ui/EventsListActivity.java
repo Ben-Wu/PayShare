@@ -109,34 +109,9 @@ public class EventsListActivity extends AppCompatActivity {
         JSONArray array = new JSONArray(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"events"));
         for (int i = 0; i< array.length();i++){
             JSONObject object= (JSONObject) array.get(i);
-            Event event = new Event();
-            try {
-                event.creator = object.getString("creator");
-                event.description = object.getString("description");
-                event.location = object.getString("location");
-                event.title = object.getString("title");
-                event.creator_username = object.getString("creator_username");
-                event.date = object.getString("date");
-                event.id = object.getString("_id");
-                //check if allowed to see
-                boolean visible =false;
-                for (String a : object.getString("users").split(",")) {
-                    event.users.add(a);
-                }
-                if(event.users.contains(myid)) {
-                    //load shares
-                    JSONArray shares = object.getJSONArray("shares");
-                    if (object.getJSONArray("shares").length() > 0) {
-                        for (int j = 0; j < shares.length(); j++) {
-                            JSONObject shareJSON = (JSONObject) shares.get(j);
-                            Share share = new Share(shareJSON);
-                            event.shares.add(share);
-                        }
-                    }
-                    events.add(event);
-                }
-            }catch (org.json.JSONException e){
-                Log.d("event fucked up", e.getMessage());
+            Event event = new Event(object);
+            if(event.users.contains(myid)) {
+                events.add(event);
             }
         }
         ((ListView)findViewById(R.id.events_listview)).setAdapter(new EventsListAdapter());
