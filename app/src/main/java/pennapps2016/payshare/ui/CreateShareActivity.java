@@ -48,7 +48,8 @@ public class CreateShareActivity extends AppCompatActivity {
         share = new Share();
         share.tag = "red";
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        share.people.add(pref.getString(LoginActivity.PREF_ID,"-1"));
+        final String selfId = pref.getString(LoginActivity.PREF_ID,"-1");
+        share.people.add(selfId);
 
         setTitle("Add a Share");
         ((Button) findViewById(R.id.choose)).setOnClickListener(new View.OnClickListener() {
@@ -61,7 +62,7 @@ public class CreateShareActivity extends AppCompatActivity {
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject user = ((JSONObject) array.get(i));
                         //add anyone but the creator!
-                        if (!user.getString("_id").equals(event.creator) && event.users.contains(user.getString("_id"))) {
+                        if (!user.getString("_id").equals(selfId) && event.users.contains(user.getString("_id"))) {
                             users.put(user.getString("name") + " (" + user.getString("user") + ")", user.getString("_id"));
                         }
                     }

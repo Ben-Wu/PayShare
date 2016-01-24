@@ -1,7 +1,10 @@
 package pennapps2016.payshare.ui;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -11,8 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +43,8 @@ public class ShareInfoActivity extends AppCompatActivity {
     private int mShare;
     private Event event;
 
+    private double costEach;
+
     final HashMap<String,String> users = new HashMap<>();
 
     @Override
@@ -50,12 +57,20 @@ public class ShareInfoActivity extends AppCompatActivity {
 
         mShare = getIntent().getIntExtra(KEY_SHARE,-1);
 
-        setUp();
+        try {
+            setUp();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.action_add_people) {
+            if(event.shares.get(mShare).people_paid.size()!=0){
+                Toast.makeText(this,"Payment has begun, you cannot join now",Toast.LENGTH_SHORT).show();
+                return true;
+            }
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Choose Users");
             final CharSequence[] keys = users.keySet().toArray(new CharSequence[users.keySet().size()]);
@@ -90,12 +105,7 @@ public class ShareInfoActivity extends AppCompatActivity {
             builder.setPositiveButton("Finish", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    JSONObject object = new JSONObject();
                     try {
-                        //save and update event
-                        object.put("$set", event.toJSONObject());
-                        NetworkHelper.postWithAsync(getString(R.string.base_url) + "events/id_search/" + event.id, object);
-                        findViewById(R.id.login_loading).setVisibility(View.VISIBLE);
                         updateSelf();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -115,14 +125,50 @@ public class ShareInfoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setUp(){
+    private void setUp() throws JSONException {
+        costEach =((int) (100 * event.shares.get(mShare).price / event.shares.get(mShare).people.size())) / 100.0;
+        final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final JSONObject payee = new JSONObject(NetworkHelper.getWithAsync(getString(R.string.base_url)+"users/id_search/"+event.shares.get(mShare).o_payer));
+        final String selfId = pref.getString(LoginActivity.PREF_ID,"-1");
+        if(event.shares.get(mShare).o_payer.equals(selfId)){
+            ((Button)findViewById(R.id.pay_share)).setVisibility(View.GONE);
+        }else if (event.shares.get(mShare).people_paid.contains(selfId)){
+            ((Button)findViewById(R.id.pay_share)).setText("You have already paid");
+            ((Button)findViewById(R.id.pay_share)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplication(),"Seriously you've paid",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            ((Button)findViewById(R.id.pay_share)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    JSONObject object = new JSONObject();
+                    try {
+                        object.put("from",pref.getString(LoginActivity.PREF_DEBIT,"-1"));
+                        object.put("to",payee.getString("debit"));
+                        object.put("amount",costEach);
+                        String resp = NetworkHelper.postWithAsync(getString(R.string.payments_url)+"purchase",object);
+                        JSONObject response = new JSONObject(resp);
+                        if(response.has("trans_id")){
+                            event.shares.get(mShare).people_paid.add(selfId);
+                            updateSelf();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
         ((TextView) findViewById(R.id.share_title)).setText(event.shares.get(mShare).title);
         ((TextView) findViewById(R.id.share_desc)).setText(event.shares.get(mShare).description);
 
         ((TextView) findViewById(R.id.total_cost)).setText(String.valueOf(event.shares.get(mShare).price));
-        ((TextView) findViewById(R.id.individual_cost)).setText(String.valueOf((int) (100 * event.shares.get(mShare).price / event.shares.get(mShare).people.size()) / 100.0));
+        ((TextView) findViewById(R.id.individual_cost)).setText(""+costEach);
         try {
-            String text = (new JSONObject(NetworkHelper.getWithAsync(getString(R.string.base_url)+"users/id_search/"+event.shares.get(mShare).o_payer))).getString("name");
+            String text = payee.getString("name");
             ((TextView) findViewById(R.id.o_payer)).setText(text);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -141,7 +187,7 @@ public class ShareInfoActivity extends AppCompatActivity {
             for (int i = 0; i<array.length(); i++){
                 JSONObject user  = ((JSONObject)array.get(i));
                 //add anyone but the creator!
-                if(!user.getString("_id").equals(event.creator)&&event.users.contains(user.getString("_id"))) {
+                if(!user.getString("_id").equals(selfId)&&event.users.contains(user.getString("_id"))) {
                     users.put(user.getString("name") + " (" + user.getString("user") + ")", user.getString("_id"));
                 }
             }
@@ -154,8 +200,13 @@ public class ShareInfoActivity extends AppCompatActivity {
     }
 
     private void updateSelf() throws JSONException {
-        JSONObject object = new JSONObject(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"events/id_search/"+event.id));
-        event = new Event(object);
+        JSONObject object = new JSONObject();
+        //save and update event
+        object.put("$set", event.toJSONObject());
+        NetworkHelper.postWithAsync(getString(R.string.base_url) + "events/id_search/" + event.id, object);
+        findViewById(R.id.login_loading).setVisibility(View.VISIBLE);
+        JSONObject objectback = new JSONObject(NetworkHelper.getWithAsync(getResources().getString(R.string.base_url)+"events/id_search/"+event.id));
+        event = new Event(objectback);
         setUp();
     }
 
@@ -205,7 +256,10 @@ public class ShareInfoActivity extends AppCompatActivity {
                 ((TextView) convertView.findViewById(R.id.sharee_paid)).setTextColor(getResources().getColor(R.color.green));
                 ((TextView) convertView.findViewById(R.id.sharee_paid)).setText("ORIGINAL PAYER");
 
-            }else {
+            }else if(event.shares.get(mShare).people_paid.contains(event.shares.get(mShare).people.get(position))) {
+                ((TextView) convertView.findViewById(R.id.sharee_paid)).setTextColor(getResources().getColor(R.color.green));
+                ((TextView) convertView.findViewById(R.id.sharee_paid)).setText("YOU'VE PAID PAID");
+            }else{
                 ((TextView) convertView.findViewById(R.id.sharee_paid)).setTextColor(getResources().getColor(R.color.text_red));
                 ((TextView) convertView.findViewById(R.id.sharee_paid)).setText("NOT PAID");
             }

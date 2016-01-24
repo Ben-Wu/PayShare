@@ -10,6 +10,16 @@
         <!-- enable window content transitions -->
         <item name="android:windowActivityTransitions">true</item>
         <item name="colorControlHighlight">@color/ripple_material_light</item>
+        <item name = "android:buttonStyle">@style/customButton</item>
 
+    </style>
+    <style name="customButton" parent="Base.Widget.AppCompat.Button.Colored">
+        <item name="android:background">@drawable/button_green</item>
+        <item name = "android:paddingLeft">24dp</item>
+        <item name = "android:paddingRight">24dp</item>
+        <item name = "android:paddingTop">4dp</item>
+        <item name = "android:paddingBottom">4dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:textColor">#fff</item>
     </style>
 </resources>

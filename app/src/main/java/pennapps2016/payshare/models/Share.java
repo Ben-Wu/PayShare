@@ -14,6 +14,7 @@ public class Share implements Serializable {
     public String title, description, o_payer,id="", tag;
     public double price;
     public ArrayList<String> people = new ArrayList<>();
+    public ArrayList<String> people_paid = new ArrayList<>();
     public Share(){
 
     }
@@ -24,6 +25,9 @@ public class Share implements Serializable {
         tag = object.getString("tag");
         price = object.getDouble("price");
         people = new ArrayList<String>(Arrays.asList(object.getString("people").split(",")));
+        if (!object.getString("people_paid").equals("")) {
+            people_paid = new ArrayList<String>(Arrays.asList(object.getString("people_paid").split(",")));
+        }
     }
 
     public JSONObject toJSONObject() throws JSONException {
@@ -34,6 +38,7 @@ public class Share implements Serializable {
         object.put("tag",tag);
         object.put("price",price);
         object.put("people",android.text.TextUtils.join(",",people));
+        object.put("people_paid",android.text.TextUtils.join(",",people_paid));
         return object;
     }
 }
