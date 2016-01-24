@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -75,11 +79,19 @@ public class DeliveryActivity extends AppCompatActivity {
     }
 
     public void getEstimate(View view) {
-        DeliveryQuote quote =
-                new DeliveryQuote(((EditText) findViewById(R.id.delivery_address)).getText().toString(),
-                        mAddress);
+        String fromAddress = ((EditText) findViewById(R.id.delivery_address)).getText().toString();
 
-        mPostmateApi.postDeliveryQuote(quote, new TestCallback(TestCallback.TYPE_QUOTE, "quote", quote.getPickupAddress(), this));
+        if(fromAddress.length() == 0) {
+            Toast.makeText(this, "Please enter an address", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        findViewById(R.id.delivery_loading).setVisibility(View.VISIBLE);
+
+        DeliveryQuote quote = new DeliveryQuote(fromAddress, mAddress);
+
+        mPostmateApi.postDeliveryQuote(quote,
+                new TestCallback(TestCallback.TYPE_QUOTE, "quote", quote.getPickupAddress(), this));
     }
 
     public class TestCallback implements Callback {
@@ -111,16 +123,18 @@ public class DeliveryActivity extends AppCompatActivity {
                         try {
                             final JSONObject quote = new JSONObject(respStr);
 
-                            ((TextView) mActivty.findViewById(R.id.to_address)).setText(mAddress);
-                            ((TextView) mActivty.findViewById(R.id.from_address)).setText(address);
+                            ((TextView) findViewById(R.id.to_address)).setText(mAddress);
+                            ((TextView) findViewById(R.id.from_address)).setText(address);
 
                             String price = "$" + (quote.getInt("fee") / 100.0);
 
-                            ((TextView) mActivty.findViewById(R.id.delivery_price)).setText(price);
+                            ((TextView) findViewById(R.id.delivery_price)).setText(price);
                             findViewById(R.id.delivery_quote).setVisibility(View.VISIBLE);
                             findViewById(R.id.delivery_quote).startAnimation(
                                     AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in));
+                            findViewById(R.id.delivery_loading).setVisibility(View.INVISIBLE);
                         } catch(JSONException e) {
+                            Toast.makeText(mActivty, "Couldn't get quote", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
@@ -132,5 +146,26 @@ public class DeliveryActivity extends AppCompatActivity {
         public void onFailure(Request request, IOException e) {
             Log.d("Error with API" , e.toString());
         }
+    }
+
+    private void makeOrder() {
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.delivery, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_make_order) {
+            makeOrder();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

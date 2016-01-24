@@ -83,7 +83,6 @@ public class EventActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         ((ListView)findViewById(R.id.shares_list)).setAdapter(new SharesListAdapter());
     }
 
