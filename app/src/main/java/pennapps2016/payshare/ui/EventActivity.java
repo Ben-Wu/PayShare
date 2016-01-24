@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import pennapps2016.payshare.R;
 import pennapps2016.payshare.models.Event;
+import pennapps2016.payshare.models.Share;
 import pennapps2016.payshare.utils.NetworkHelper;
 
 /**
@@ -198,6 +199,14 @@ public class EventActivity extends AppCompatActivity {
             ((TextView)convertView.findViewById(R.id.description)).setText(event.shares.get(position).description);
             ((TextView)convertView.findViewById(R.id.people_count)).setText(""+event.shares.get(position).people.size());
             ((TextView)convertView.findViewById(R.id.price)).setText(""+event.shares.get(position).price);
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            if(event.shares.get(position).people.contains(pref.getString(LoginActivity.PREF_ID,"-1"))){
+                if(event.shares.get(position).people_paid.contains(pref.getString(LoginActivity.PREF_ID,"-1"))){
+                    ((ImageView)convertView.findViewById(R.id.status_icon)).setImageDrawable(getDrawable(R.drawable.ic_check_circle_green_400_24dp));
+                }else{
+                    ((ImageView)convertView.findViewById(R.id.status_icon)).setImageDrawable(getDrawable(R.drawable.ic_error_red_400_24dp));
+                }
+            }
             if (event.shares.get(position).tag.equals("red")){
                 ((ImageView)convertView.findViewById(R.id.tag)).setBackgroundColor(getResources().getColor(R.color.red));
             }else if (event.shares.get(position).tag.equals("green")){

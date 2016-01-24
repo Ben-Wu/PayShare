@@ -6,11 +6,11 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:background="#fff"
+        android:background="@drawable/white_background_ripple"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:foreground="@drawable/white_background_ripple"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:focusable="false">
 
         <ImageView
             android:foreground="?android:attr/selectableItemBackground"
@@ -29,29 +29,43 @@
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Share Title"
-                android:id="@+id/title"
-                android:textIsSelectable="false"
-                android:textSize="18sp"
-                android:textColor="#000" />
-
-            <LinearLayout
+            <RelativeLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <TextView
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Share Description"
-                    android:id="@+id/description"
-                    android:fontFamily="sans-serif-light"
-                    android:textColor="#000" />
+                    android:layout_alignParentStart="true">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share Title"
+                        android:id="@+id/title"
+                        android:textIsSelectable="false"
+                        android:textSize="18sp"
+                        android:textColor="#000" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Share Description"
+                        android:id="@+id/description"
+                        android:fontFamily="sans-serif-light"
+                        android:textColor="#000" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/status_icon"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:orientation="horizontal"
