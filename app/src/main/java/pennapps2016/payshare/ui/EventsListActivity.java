@@ -55,7 +55,7 @@ public class EventsListActivity extends AppCompatActivity {
             }
         });
 
-        setTitle("Public Events");
+        setTitle("Your Events");
     }
 
     @Override
